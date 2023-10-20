@@ -3,11 +3,11 @@
 
 Group members (3-5) (no Student IDs, only names and github usernames):
 
-1. 
+1.  Matthew Mui - mmuidev
 
-2. 
+2.  Keeran Srikugan - Keeran-Srikugan
 
-3. 
+3. Omar Mohamed - omarMohGit
 
 4. 
 
