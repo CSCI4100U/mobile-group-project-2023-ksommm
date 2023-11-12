@@ -400,8 +400,8 @@ class homePage extends StatelessWidget {
     }
     else if(rain.contains(condition)){
       return 'assets/raining.png';
-    }dd 
-    else {
+    }
+    else{
       return 'assets/catLol.png';
     }
   }
