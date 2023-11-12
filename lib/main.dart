@@ -4,6 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:main/mainTaskPage.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -301,11 +303,7 @@ class homePage extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => settings(),
-                                ),
-                              );
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => mainTaskPage()));
                             },
                             child: Text('Tasks'),
                           ),
@@ -405,6 +403,9 @@ class homePage extends StatelessWidget {
       return 'assets/catLol.png';
     }
   }
+
+
+
 }
 
 
