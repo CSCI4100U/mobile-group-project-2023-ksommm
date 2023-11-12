@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/catLol.png'),
-            SizedBox(height: 16),
+            SizedBox(height: 17),
             const Text(
               'Our app lol IDK how we surviving',
               style: TextStyle(
@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 class AccessAccPage extends StatelessWidget {
-  const AccessAccPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class AccessAccPage extends StatelessWidget {
               const Text("Welcome to our App!",
                   style:
                       TextStyle(
-              fontSize:40, fontWeight:FontWeight.bold)),
+              fontSize:42, fontWeight:FontWeight.bold)),
               SizedBox(height: 36),
               Image.asset('assets/catLol.png', width: 150, height:100),
               SizedBox(
@@ -279,7 +279,7 @@ class homePage extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => settings(),
+                                  builder: (context) => creatures(),
                                 ),
                               );
                             },
@@ -291,7 +291,7 @@ class homePage extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => settings(),
+                                  builder: (context) => furnitureStore(),
                                 ),
                               );
                             },
@@ -345,6 +345,10 @@ class homePage extends StatelessWidget {
       ),
     );
   }
+
+
+
+
 
   Future<Map<String, dynamic>> getLocationAndWeather() async {
 
@@ -400,7 +404,7 @@ class homePage extends StatelessWidget {
     }
     else if(rain.contains(condition)){
       return 'assets/raining.png';
-    }dd 
+    }
     else {
       return 'assets/catLol.png';
     }
@@ -414,8 +418,8 @@ class settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 class _SettingsState extends State<settings> {
-  int sliderValue1 = 0;
-  int sliderValue2 = 0;
+  int sfxVolSlider = 0;
+  int volSlider = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -426,23 +430,23 @@ class _SettingsState extends State<settings> {
       body: Center(
         child: Column(
           children: <Widget>[
-            Text('SFX: $sliderValue1'),
+            Text('SFX: $sfxVolSlider'),
             Slider(
-              value: sliderValue1.toDouble(),
+              value: sfxVolSlider.toDouble(),
               onChanged: (newValue) {
                 setState(() {
-                  sliderValue1 = newValue.toInt();
+                  sfxVolSlider = newValue.toInt();
                 });
               },
               min: 0,
               max: 100,
             ),
-            Text('Music: $sliderValue2'),
+            Text('Music: $volSlider'),
             Slider(
-              value: sliderValue2.toDouble(),
+              value: volSlider.toDouble(),
               onChanged: (newValue) {
                 setState(() {
-                  sliderValue2 = newValue.toInt();
+                  volSlider = newValue.toInt();
                 });
               },
               min: 0,
@@ -555,6 +559,171 @@ class achievements extends StatelessWidget {
     );
   }
 }
+
+
+class infoCreature {
+
+   String creatureName;
+   String tempAsset;
+   bool status;
+   infoCreature({required this.creatureName, required this.tempAsset, this.status = false});
+}
+
+class creatures extends StatefulWidget {
+  @override
+  showcaseCreatures createState() => showcaseCreatures();
+}
+
+class showcaseCreatures extends State<creatures> {
+   late int equipSwitchMode=0;
+
+   final List<infoCreature> ownedCreatures = [
+    infoCreature(creatureName: 'koala', tempAsset: 'https://i.pinimg.com/originals/2b/51/6d/2b516df24323c3803c66bdec7a714c20.gif'),
+    infoCreature(creatureName: 'scooby', tempAsset: 'https://upload.wikimedia.org/wikipedia/en/b/b2/Pluto_%28Disney%29_transparent.png'),
+    infoCreature(creatureName: 'dogcat', tempAsset: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/ea656545-c0c2-426c-bc41-e47ce5c7a0c9/dfzuuc6-568f505e-6c77-4f57-831e-9b97d7c5a533.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2VhNjU2NTQ1LWMwYzItNDI2Yy1iYzQxLWU0N2NlNWM3YTBjOVwvZGZ6dXVjNi01NjhmNTA1ZS02Yzc3LTRmNTctODMxZS05Yjk3ZDdjNWE1MzMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.GAHY6F6QjR-3PdnUAnUAyAVDMTolLNV41RzEJbMBPzs'),
+    infoCreature(creatureName: 'buddah cheese', tempAsset: 'https://cdn.pixabay.com/photo/2013/07/12/17/39/rat-152162_1280.png'),
+  ];
+
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Your Creatures"),
+      ),
+
+      body: ListView.builder(
+        itemCount: ownedCreatures.length,
+
+        itemBuilder: (context, num) {
+          return ListTile(
+            onTap: () => equipCreature(context, num),
+            leading: Image(
+              image: NetworkImage(ownedCreatures[num].tempAsset),
+            ),
+            title: Text(ownedCreatures[num].creatureName),
+            subtitle: ownedCreatures[num].status ? Text('equiped', style: TextStyle(color: Colors.green)) : null,
+          );
+        },
+      ),
+    );
+  }
+
+  void equipCreature(BuildContext context, int num) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Equip ${ownedCreatures[num].creatureName}?"),
+
+          actions: <Widget>[
+            TextButton(
+              child: Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+
+            TextButton(
+              child: Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                confirmEquipCreature(context, num);
+              },
+            ),
+          ],
+
+        );
+      },
+    );
+  }
+
+  void confirmEquipCreature(BuildContext context, int num) {
+    setState(() {
+
+      if (equipSwitchMode != 0) {
+        ownedCreatures[equipSwitchMode].status = false;
+      }
+      ownedCreatures[num].status = true;
+      equipSwitchMode = num;
+    });
+    popupSnack(context, num);
+  }
+
+  void popupSnack(BuildContext context, int num) {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${ownedCreatures[num].creatureName} has been equipped'),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+
+  }
+}
+
+class Item {
+
+  String tempAsset;
+  String name;
+  int price;
+
+
+  Item({required this.tempAsset, required this.name, required this.price});
+}
+
+class furnitureStore extends StatelessWidget {
+
+
+  final List<Item> items = [
+    Item(tempAsset: 'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg', name: 'rock', price: 25),
+    Item(tempAsset: 'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg', name: 'rock', price: 25),
+    Item(tempAsset: 'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg', name: 'rock', price: 25),
+    Item(tempAsset: 'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg', name: 'rock', price: 25),
+    Item(tempAsset: 'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg', name: 'rock', price: 25),
+    Item(tempAsset: 'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg', name: 'rock', price: 25),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Furniture Store'),
+      ),
+
+      body: GridView.builder(
+
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+
+        itemCount: items.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GridTile(
+            child: Image.network(
+              items[index].tempAsset,
+              fit: BoxFit.cover,
+            ),
+            footer: Container(
+              child: Text(
+                items[index].name,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
 
 
 
