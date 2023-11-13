@@ -8,18 +8,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_native_splash: ^1.3.0
+  flutter_native_splash: any
   cupertino_icons: ^1.0.2
+  firebase_core: ^2.22.0
+  firebase_auth: ^4.13.0
+  cloud_firestore: ^4.13.0
+  provider: ^6.1.1
+  xml: ^6.0.1
+  firebase_ui_auth: 1.7.0
+  go_router: ^12.1.1
   geolocator: ^7.6.2
   http: ^0.13.4
   duration_picker: ^1.0.1
   sqflite:
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 
 

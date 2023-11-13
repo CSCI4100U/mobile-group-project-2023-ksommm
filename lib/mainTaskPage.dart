@@ -38,8 +38,10 @@ class _mainTaskPageState extends State<mainTaskPage> {
   Future _getThingsOnStartup() async {
     var gradeModel = TasksModel();
     listTask =await gradeModel.getAllTasks();
-    _lastInsertedId = listTask[listTask.length-1].id!;
-    print(_lastInsertedId);
+    if(listTask.length!=0){
+      _lastInsertedId = listTask[listTask.length-1].id!;
+      print(_lastInsertedId);
+    }
     setState(() {
 
     });
@@ -49,10 +51,10 @@ class _mainTaskPageState extends State<mainTaskPage> {
   @override
   Widget build(BuildContext context) {
     return
-    Scaffold(
+      Scaffold(
         appBar: AppBar(
           title: Text("Task List Page",
-          style: TextStyle(color: Colors.white, fontSize: 25)),
+              style: TextStyle(color: Colors.white, fontSize: 25)),
           actions: [
             IconButton(onPressed: (){
               _deleteTask();
@@ -60,39 +62,38 @@ class _mainTaskPageState extends State<mainTaskPage> {
                 icon: const Icon(Icons.delete))
           ],
         ),
-      body:
+        body:
         Center(
-          child: ListView.builder(
-            itemCount: listTask.length,
-            itemBuilder: (BuildContext context, int index){
-              print(listTask[index]);
-              return new ListTile(
-                title: Text(listTask[index].name!),
-                subtitle: Text(listTask[index].description! + ",  Total time set: "+ listTask[index].time!),
-                onTap: (){
-                  setState(() {
-                    _selectedIndex = index;
-                    selectedID = listTask[_selectedIndex].id;
-                  });
-                },
-              );
-            },
-          )
+            child: ListView.builder(
+              itemCount: listTask.length,
+              itemBuilder: (BuildContext context, int index){
+                print(listTask[index]);
+                return new ListTile(
+                  title: Text(listTask[index].name!),
+                  subtitle: Text(listTask[index].description! + ",  Total time set: "+ listTask[index].time!),
+                  onTap: (){
+                    setState(() {
+                      _selectedIndex = index;
+                      selectedID = listTask[_selectedIndex].id;
+                    });
+                  },
+                );
+              },
+            )
         ),
 
         floatingActionButton: FloatingActionButton(
           onPressed:_navigateToTaskAdd,
           child: const Icon(Icons.add),
         ),
-    );
+      );
   }
 
   Future _navigateToTaskAdd() async{
     print("Successfully clicked add");
-   List information =  await Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskForm())) as List;
-   id_counter++;
-   _addList(information);
-
+    List information =  await Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskForm())) as List;
+    id_counter++;
+    _addList(information);
   }
 
 
@@ -109,6 +110,9 @@ class _mainTaskPageState extends State<mainTaskPage> {
   }
 
   Future _addList(List info) async{
+    if (_lastInsertedId == null) {
+      _lastInsertedId = 0;
+    }
     Task task = Task(id: _lastInsertedId + 1, name: info[0], description: info[1], time: info[2]);
     if (id_counter != null){
       task.id = id_counter;
@@ -122,5 +126,4 @@ class _mainTaskPageState extends State<mainTaskPage> {
     onGoBack;
 
   }
-
 }

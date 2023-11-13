@@ -23,7 +23,7 @@ class _TaskFormState extends State<TaskForm> {
         appBar: AppBar(
           title: Text("Add Task",
               style: TextStyle(color: Colors.white, fontSize: 25),
-          textAlign: TextAlign.center),
+              textAlign: TextAlign.center),
         ),
         body: Column(
           children: [
@@ -70,23 +70,23 @@ class _TaskFormState extends State<TaskForm> {
             Padding(
                 padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
                 child:
-                  ElevatedButton(
-                    onPressed: () async{
-                      var duration = await showDurationPicker(context: context, initialTime: Duration(minutes: 30));
+                ElevatedButton(
+                  onPressed: () async{
+                    var duration = await showDurationPicker(context: context, initialTime: Duration(minutes: 30));
 
-                      durationSelected = duration;
+                    durationSelected = duration;
 
-                      if(durationSelected != Null){
-                        //Prints the time selected to the Snackbar if time is not null
-                        ScaffoldMessenger.of(context).showSnackBar((
-                            SnackBar(
-                                content:Text("Time selected: $duration")
+                    if(durationSelected != Null){
+                      //Prints the time selected to the Snackbar if time is not null
+                      ScaffoldMessenger.of(context).showSnackBar((
+                          SnackBar(
+                              content:Text("Time selected: $duration")
 
-                            )));
-                      }
-                    },
-                    child: Text("Choose time limit"),
-                  )
+                          )));
+                    }
+                  },
+                  child: Text("Choose time limit"),
+                )
             ),
 
 
