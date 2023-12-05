@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
 import 'package:main/pages/achievements.dart';
 import 'package:main/pages/creatures.dart';
 import 'package:main/pages/ItemsStore.dart';
@@ -8,10 +9,37 @@ import 'package:main/pages/settings.dart';
 import 'dart:convert';
 
 import 'mainTaskPage.dart';
+import 'settings.dart';
 
-class HomePage extends StatelessWidget {
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'My App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String? homePageBackgroundImage;
+  InfoCreature? equippedCreature;
+
+  @override
+  Widget build(BuildContext context) {
+    playMusic(0);
     return Scaffold(
       body: FutureBuilder(
         future: getLocationAndWeather(),
@@ -30,45 +58,13 @@ class HomePage extends StatelessWidget {
             String weatherStats = snapshot.data?['weatherResults'] as String;
             String coords = snapshot.data?['location'] as String;
             String backgroundScreen = snapshot.data?['imageAsset'] as String;
+            String creatureSelected = equippedCreature?.tempAsset ?? snapshot.data?['imageAsset'] as String;
 
             return Stack(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    /*
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Weather Results: $weatherStats',
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ),
-
-
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Location: $coords',
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ),
-
-                     */
                     Expanded(
                       child: Image.asset(
                         backgroundScreen,
@@ -79,26 +75,54 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                // Buttons
+
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+
+                    if (equippedCreature != null)
+                      Center(
+                        child: Transform.translate(
+                          offset: Offset(0.0, 5.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                equippedCreature!.tempAsset,
+                                width: 200,
+                                height: 250,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
+                        Flexible(
+                          flex: 2,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
+                            onPressed: () async {
+                              final selectedCreature = await Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => CreaturesPage(),
                                 ),
                               );
+                              if (selectedCreature != null) {
+                                setState(() {
+                                  equippedCreature = selectedCreature;
+                                });
+                              }
                             },
-                            child: Text('Pets', style:TextStyle(fontSize: 12.0)),
+                            child: Text('Pets', style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
-                        Expanded(
+
+
+
+                        Flexible(
+                          flex: 2,
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).push(
@@ -107,10 +131,11 @@ class HomePage extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Text('Furniture',style:TextStyle(fontSize: 12.0)),
+                            child: Text('Furniture', style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
-                        Expanded(
+                        Flexible(
+                          flex: 2,
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
@@ -120,10 +145,11 @@ class HomePage extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Text('Tasks',style:TextStyle(fontSize: 12.0)),
+                            child: Text('Tasks', style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
-                        Expanded(
+                        Flexible(
+                          flex: 2,
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).push(
@@ -132,19 +158,22 @@ class HomePage extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Text('Trophys',style:TextStyle(fontSize: 12.0)),
+                            child: Text('Trophys', style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
-                        Expanded(
+                        Flexible(
+                          flex: 2,
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => SettingsPage(),
+                                  builder: (context) => SettingsPage(playMusic: (volSlider) {
+                                    playMusic: (volSlider);
+                                  }),
                                 ),
                               );
                             },
-                            child: Text('Settings',style:TextStyle(fontSize: 12.0)),
+                            child: Text('Settings', style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
                       ],
@@ -253,6 +282,15 @@ class HomePage extends StatelessWidget {
       return 'assets/raining.png';
     } else {
       return 'assets/catLol.png';
+    }
+  }
+
+  Future<void> playMusic(int volSlider) async {
+    if (!audioPlayer.playing) {
+      await audioPlayer.setAsset('assets/backgroundAudio.wav');
+      audioPlayer.play();
+      audioPlayer.setVolume(volSlider / 100);
+      audioPlayer.setLoopMode(LoopMode.one);
     }
   }
 }

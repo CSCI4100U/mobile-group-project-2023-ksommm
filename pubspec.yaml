@@ -21,6 +21,10 @@ dependencies:
   permission_handler: ^11.0.0
   http: ^0.13.4
   duration_picker: ^1.0.1
+  just_audio: ^0.9.35
+  audio_service: ^0.18.12
+  flutter_local_notifications: ^16.2.0
+  cached_network_image: ^3.3.0
   sqflite:
 
 dev_dependencies:
@@ -44,6 +48,7 @@ flutter:
     - assets/snowing.png
     - assets/unlockedTrophy.png
     - assets/lockedTrophy.png
+    - assets/backgroundAudio.wav
 
 flutter_native_splash:
       image: assets/catLol.png
