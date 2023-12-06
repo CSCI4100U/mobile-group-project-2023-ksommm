@@ -25,41 +25,15 @@ class _TaskStartState extends State<TaskStart> {
     super.initState();
     final allStrings = widget.taskList.time.split(":");
     final minutes = allStrings[1];
-     countDownDuration = Duration(minutes: int.parse(widget.taskList.time.split(":")[1]));
-    reset();
+    countDownDuration = Duration(minutes: int.parse(widget.taskList.time.split(":")[1]));
+    duration = countDownDuration;
   }
 
-
-  void reset(){
-    setState(() {
-      duration = countDownDuration;
-    });
-  }
-
-  void startTimer(){
-    timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
-  }
-
-  void addTime(){
-    final addSecond = -1;
-
-    setState(() {
-      final seconds = duration.inSeconds + addSecond;
-      if(seconds < 0){
-        timer?.cancel();
-      }else{
-        duration = Duration(seconds: seconds);
-      }
-
-    });
-  }
 
 
   //This is the main build portion
   @override
   Widget build(BuildContext context) {
-    print(widget.taskList);
-
     final allStrings = widget.taskList.time.split(":");
     final minutes = allStrings[1];
     return Scaffold(
@@ -67,7 +41,24 @@ class _TaskStartState extends State<TaskStart> {
           title: Text("Selected Task",
               style: TextStyle(color: Colors.white, fontSize: 25),
               textAlign: TextAlign.center),
+
+          //Here Gesture detector added so that timer can be stopped so that page can be popped without timer overflow
+          leading: GestureDetector(
+            child: Icon(Icons.arrow_back_outlined),
+            onTap: (){
+              if(timer != null){
+                timer!.cancel();
+              }
+              Navigator.pop(context);
+            },
+          ),
+
+
         ),
+
+        //Here is the body of the widget, where most of the data being displayed to the user is fomatted.
+        //Start by showing the name, then description, and then calling a widget (build time) to display the current-
+        //time of the timer. After the widget, there are two buttons to play/pause the timer countdown.
         body: Center(
             child: Column(
               children: [
@@ -106,15 +97,39 @@ class _TaskStartState extends State<TaskStart> {
     );
   }
 
-  Widget buildTime(){
-    String one(int n ) => n.toString().padLeft(2, '0');
-    final mins = one(duration.inMinutes.remainder(60));
-    final secs = one(duration.inSeconds.remainder(60));
 
+//This is the widget that will build the
+  Widget buildTime(){
+    final mins = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final secs = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+    //This is the text box widget that
     return Text(
       '$mins:$secs',
       style: TextStyle(fontSize: 50),
     );
+  }
+
+  void startTimer(){
+    if(timer == null ){
+      timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
+    }else if(timer!.isActive == false){
+      timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
+    }
+  }
+
+  void addTime(){
+    final addSecond = -1;
+
+    setState(() {
+      final seconds = duration.inSeconds + addSecond;
+      if(seconds < 0){
+        timer?.cancel();
+      }else{
+        duration = Duration(seconds: seconds);
+      }
+
+    });
   }
 
 }
