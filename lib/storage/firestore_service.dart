@@ -3,21 +3,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Example: Create a reference to a collection
+  // TODO: REMOVE LATER Example: Create a reference to a collection
   CollectionReference<Map<String, dynamic>> getExampleCollection() {
     return _firestore.collection('example_collection');
   }
 
+  // TODO: REMOVE LATER
   CollectionReference<Map<String, dynamic>> getUsersCollection() {
     return _firestore.collection('users');
   }
 
-  // Example: Create a reference to a document
+  // TODO: REMOVE LATER, Example: Create a reference to a document
   DocumentReference<Map<String, dynamic>> getDocumentReference(
       String documentId) {
     return _firestore.collection('example_collection').doc(documentId);
   }
 
+  // TODO: Remove, reference sample code
   Future<void> addUser(String name, String email, int age, bool isAdmin) async {
     try {
       await _firestore.collection('users').add({
@@ -31,6 +33,7 @@ class FirestoreService {
     }
   }
 
+  // TODO: remove, reference sample code
   Future<void> addUsers(List<Map<String, dynamic>> users) async {
     try {
       final CollectionReference<Map<String, dynamic>> usersCollection =
@@ -59,6 +62,24 @@ class FirestoreService {
       for (final task in tasks) {
         futures.add(tasksCollection.add(task.toMap()));
         print(task);
+      }
+
+      // TODO: Testing block, prints what's inside the collection snapshot
+      print("all tasks:\n");
+      try {
+        QuerySnapshot querySnapshot = await tasksCollection.orderBy('name').get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          querySnapshot.docs.forEach((doc) {
+            print('Document ID: ${doc.id}');
+            print('Data: ${doc.data()}');
+            print('-------------');
+          });
+        } else {
+          print('No documents found in the collection.');
+        }
+      } catch (e) {
+        print('Error: $e');
       }
 
       await Future.wait(futures);
