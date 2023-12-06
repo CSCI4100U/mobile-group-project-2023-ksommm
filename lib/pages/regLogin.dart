@@ -87,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) => HomePage(),
         ),
       );
+      print("received return from sign in");
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;

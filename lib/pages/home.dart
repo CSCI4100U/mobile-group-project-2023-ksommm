@@ -6,6 +6,7 @@ import 'package:main/pages/achievements.dart';
 import 'package:main/pages/creatures.dart';
 import 'package:main/pages/ItemsStore.dart';
 import 'package:main/pages/settings.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:convert';
 
 import 'mainTaskPage.dart';
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder(
         future: getLocationAndWeather(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData && !snapshot.hasError) {
             return Image.asset(
               'assets/background.png',
               width: double.infinity,
@@ -58,7 +59,8 @@ class _HomePageState extends State<HomePage> {
             String weatherStats = snapshot.data?['weatherResults'] as String;
             String coords = snapshot.data?['location'] as String;
             String backgroundScreen = snapshot.data?['imageAsset'] as String;
-            String creatureSelected = equippedCreature?.tempAsset ?? snapshot.data?['imageAsset'] as String;
+            String creatureSelected = equippedCreature?.tempAsset ??
+                snapshot.data?['imageAsset'] as String;
 
             return Stack(
               children: [
@@ -75,11 +77,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
                     if (equippedCreature != null)
                       Center(
                         child: Transform.translate(
@@ -96,7 +96,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -104,7 +103,8 @@ class _HomePageState extends State<HomePage> {
                           flex: 2,
                           child: ElevatedButton(
                             onPressed: () async {
-                              final selectedCreature = await Navigator.of(context).push(
+                              final selectedCreature =
+                              await Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => CreaturesPage(),
                                 ),
@@ -115,12 +115,10 @@ class _HomePageState extends State<HomePage> {
                                 });
                               }
                             },
-                            child: Text('Pets', style: TextStyle(fontSize: 12.0)),
+                            child:
+                            Text('Pets', style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
-
-
-
                         Flexible(
                           flex: 2,
                           child: ElevatedButton(
@@ -131,7 +129,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                            child: Text('Furniture', style: TextStyle(fontSize: 12.0)),
+                            child: Text('Furniture',
+                                style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
                         Flexible(
@@ -145,7 +144,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                            child: Text('Tasks', style: TextStyle(fontSize: 12.0)),
+                            child:
+                            Text('Tasks', style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
                         Flexible(
@@ -158,7 +158,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                            child: Text('Trophys', style: TextStyle(fontSize: 12.0)),
+                            child: Text('Trophys',
+                                style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
                         Flexible(
@@ -167,13 +168,16 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => SettingsPage(playMusic: (volSlider) {
-                                    playMusic: (volSlider);
-                                  }),
+                                  builder: (context) =>
+                                      SettingsPage(playMusic: (volSlider) {
+                                        playMusic:
+                                        (volSlider);
+                                      }),
                                 ),
                               );
                             },
-                            child: Text('Settings', style: TextStyle(fontSize: 12.0)),
+                            child: Text('Settings',
+                                style: TextStyle(fontSize: 12.0)),
                           ),
                         ),
                       ],
@@ -189,13 +193,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<Map<String, dynamic>> getLocationAndWeather() async {
-    Position pos = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+    var perms = await Permission.location.request();
+    Position pos;
+    if (perms == PermissionStatus.granted) {
+      pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+    }
+    else {
+      throw Exception("No location available");
+    }
 
     String ourSecretAPIKey = 'd4d679ec60a64104b28103140231011';
     String urlAPI =
-        'http://api.weatherapi.com/v1/current.json?key=$ourSecretAPIKey&q=${pos.latitude},${pos.longitude}';
+        'http://api.weatherapi.com/v1/current.json?key=$ourSecretAPIKey&q=${pos
+        .latitude},${pos.longitude}';
 
     final response = await http.get(Uri.parse(urlAPI));
     if (response.statusCode == 200) {
