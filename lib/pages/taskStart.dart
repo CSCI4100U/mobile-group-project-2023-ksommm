@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'Task.dart';
 
+
+
 class TaskStart extends StatefulWidget {
   Task taskList;
 
@@ -118,6 +120,7 @@ class _TaskStartState extends State<TaskStart> {
   }
 
   //Here the timer is started, and checks are added to ensure once started it cannot be started again
+  //Note: To create timer referenced following video: https://www.youtube.com/watch?v=Bw6zc1nncyA
   void startTimer(){
     if(timer == null ){
       timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());

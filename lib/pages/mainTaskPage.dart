@@ -17,9 +17,7 @@ class mainTaskPage extends StatefulWidget {
 
 class _mainTaskPageState extends State<mainTaskPage> {
   List listTask =[];
-  int id_counter = 0;
-  int counter = 0;
-  var _task = TasksModel();
+  var _taskModel = TasksModel();
   var _lastInsertedId;
 
   int index = 0;
@@ -38,11 +36,9 @@ class _mainTaskPageState extends State<mainTaskPage> {
 
   //On start up,
   Future _getThingsOnStartup() async {
-    var gradeModel = TasksModel();
-    listTask =await gradeModel.getAllTasks();
+    listTask =await _taskModel.getAllTasks();
     if(listTask.length!=0){
       _lastInsertedId = listTask[listTask.length-1].id!;
-      print(_lastInsertedId);
     }
     setState(() {
 
@@ -66,6 +62,9 @@ class _mainTaskPageState extends State<mainTaskPage> {
         ),
         body:
         Center(
+
+          //Listview here will simply list all of the different tasks collected earlier during the init state, or if the
+          //page has been rebuilt with a new updated list.
             child: ListView.builder(
               itemCount: listTask.length,
               itemBuilder: (BuildContext context, int index){
@@ -102,19 +101,17 @@ class _mainTaskPageState extends State<mainTaskPage> {
   //This function call the TaskForm page to get the information required for the task.
   //After information is collected such as id and name, etc. the information is passed to a new function to add to the database later.
   Future _navigateToTaskAdd() async{
-    print("Successfully clicked add");
     List information =  (await Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskForm())) as List);
-    id_counter++;
     _addList(information);
+
   }
 
 
   //This onGoBack function is used to update the list and to set the lastInsertedID correctly for when the page is reset
+  //This function had to be specifically created for delete, so that it can be called and update the list now without the
+  //task that was just deleted.
   Future onGoBack(dynamic value) async {
-    var gradeModel = TasksModel();
-    List grades1 = await gradeModel.getAllTasks();
-
-    listTask = grades1;
+    listTask = await _taskModel.getAllTasks();
     if(listTask.length > 0){
       _lastInsertedId = listTask[listTask.length - 1].id!;
     }else{
@@ -125,20 +122,18 @@ class _mainTaskPageState extends State<mainTaskPage> {
   }
 
   //Here is the function for adding the task to the list.
-  //The task is created with the information gathered and the add task from the model is called.
+  //The task is created with the information gathered and the add task from TaskModel is called.
   Future _addList(List info) async{
     if (_lastInsertedId == null) {
       _lastInsertedId = 0;
     }
     Task task = Task(id: _lastInsertedId + 1, name: info[0], description: info[1], time: info[2], days: 0, complete: 0);
-    if (id_counter != null){
-      task.id = id_counter;
-    }
-    _lastInsertedId = await _task.insertTask(task).then(onGoBack);
+
+    _lastInsertedId = await _taskModel.insertTask(task).then(onGoBack);
   }
 
-  //Here is task delete task is run
+  //Here is task delete task is run. Called from the TaskModel.
   void _deleteTask(){
-    _task.deleteTodoWithId(selectedID).then(onGoBack);
+    _taskModel.deleteTodoWithId(selectedID).then(onGoBack);
   }
 }
