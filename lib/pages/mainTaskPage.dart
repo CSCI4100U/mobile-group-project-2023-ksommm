@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:main/pages/taskStart.dart';
-import 'package:main/storage/firestore_service.dart';
 
 import 'Task.dart';
 import 'TaskForm.dart';
@@ -58,11 +57,6 @@ class _mainTaskPageState extends State<mainTaskPage> {
                 _deleteTask();
               },
               icon: const Icon(Icons.delete)),
-          IconButton(
-              onPressed: () {
-                addAllTasksToFirestore(listTask);
-              },
-              icon: const Icon(Icons.car_crash))
         ],
       ),
       body: Center(
@@ -149,11 +143,5 @@ class _mainTaskPageState extends State<mainTaskPage> {
   //Here is task delete task is run
   void _deleteTask() {
     _task.deleteTodoWithId(selectedID).then(onGoBack);
-  }
-
-  // TODO: Delete function after testing
-  void addAllTasksToFirestore(List tasks) {
-    FirestoreService firestoreService = FirestoreService();
-    firestoreService.addTasks(tasks);
   }
 }
