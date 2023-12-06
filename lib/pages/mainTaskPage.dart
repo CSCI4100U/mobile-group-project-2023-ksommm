@@ -35,6 +35,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
     super.initState();
   }
 
+  //On start up,
   Future _getThingsOnStartup() async {
     var gradeModel = TasksModel();
     listTask = await gradeModel.getAllTasks();
@@ -74,6 +75,8 @@ class _mainTaskPageState extends State<mainTaskPage> {
             subtitle: Text(listTask[index].description! +
                 ",  Total time set: " +
                 listTask[index].time!),
+
+            //This long press will open up and allow user to start the specific task based on the selected index.
             onLongPress: () {
               _selectedIndex = index;
               selectedID = listTask[_selectedIndex].id;
@@ -81,6 +84,8 @@ class _mainTaskPageState extends State<mainTaskPage> {
                   builder: (context) =>
                       TaskStart(taskList: listTask[_selectedIndex])));
             },
+
+            //Here on tap we just update the current selected index so that it can be referenced when deleting later.
             onTap: () {
               _selectedIndex = index;
               selectedID = listTask[_selectedIndex].id;
@@ -88,6 +93,8 @@ class _mainTaskPageState extends State<mainTaskPage> {
           );
         },
       )),
+
+      //This floatingActionButton is used to start the process of adding a new task
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToTaskAdd,
         child: const Icon(Icons.add),
