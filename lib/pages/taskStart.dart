@@ -20,11 +20,10 @@ class _TaskStartState extends State<TaskStart> {
   Timer? timer;
   bool? isCountdown = true;
 
+  //Here in the initState(), the total amount of time being started at is set for the timer to display and use later.
   @override
   void initState(){
     super.initState();
-    final allStrings = widget.taskList.time.split(":");
-    final minutes = allStrings[1];
     countDownDuration = Duration(minutes: int.parse(widget.taskList.time.split(":")[1]));
     duration = countDownDuration;
   }
@@ -34,8 +33,6 @@ class _TaskStartState extends State<TaskStart> {
   //This is the main build portion
   @override
   Widget build(BuildContext context) {
-    final allStrings = widget.taskList.time.split(":");
-    final minutes = allStrings[1];
     return Scaffold(
         appBar: AppBar(
           title: Text("Selected Task",
@@ -62,12 +59,17 @@ class _TaskStartState extends State<TaskStart> {
         body: Center(
             child: Column(
               children: [
+
+                //Here we list the title/name of the task opened
                 Padding(padding: EdgeInsets.only(top: 10),
                   child: Text("Task Name: " + widget.taskList.name!,
                     style: TextStyle(
                         fontSize: 25
                     ),),
                 ),
+
+
+                //Here we list the description of the task opened
                 Padding(padding: EdgeInsets.only(top: 0),
                   child: Text("Desciption of Task: " + widget.taskList.description!,
                       style: TextStyle(
@@ -75,9 +77,14 @@ class _TaskStartState extends State<TaskStart> {
                       ),
                       textAlign: TextAlign.center),
                 ),
+
+
+                 //This is where the timer is built and shown on screen for display
                  Padding(padding: EdgeInsets.only(top: 250),
                     child: buildTime(),
                  ),
+
+                //Row contains the two play and pause buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -98,18 +105,19 @@ class _TaskStartState extends State<TaskStart> {
   }
 
 
-//This is the widget that will build the
+//This is the widget that will build the timer being shown
   Widget buildTime(){
     final mins = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
     final secs = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
 
-    //This is the text box widget that
+    //This is the text box widget that draws to the user on the page the timer count down as it gets updated.
     return Text(
       '$mins:$secs',
       style: TextStyle(fontSize: 50),
     );
   }
 
+  //Here the timer is started, and checks are added to ensure once started it cannot be started again
   void startTimer(){
     if(timer == null ){
       timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
@@ -118,11 +126,12 @@ class _TaskStartState extends State<TaskStart> {
     }
   }
 
+  //Here is where the timer gets decreased by a second which causes the timer to go down.
   void addTime(){
-    final addSecond = -1;
+    final removeSecond = -1;
 
     setState(() {
-      final seconds = duration.inSeconds + addSecond;
+      final seconds = duration.inSeconds + removeSecond;
       if(seconds < 0){
         timer?.cancel();
       }else{
