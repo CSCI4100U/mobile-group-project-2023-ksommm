@@ -52,10 +52,24 @@ class _mainTaskPageState extends State<mainTaskPage> {
           title: const Text("Task List Page",
               style: TextStyle(color: Colors.white, fontSize: 25)),
           actions: [
+            TextButton(
+              child: Text("Autocomplete Tasks"),
+              onPressed: (){
+                for(int i = 0; i < listTask.length; i ++ ){
+                  listTask[i].days = 7;
+                  listTask[i].complete = 1;
+                }
+                checkIfAllTasksDone();
+                setState(() {
+
+                });
+              }, ),
             IconButton(onPressed: (){
               _deleteTask();
             },
-                icon: const Icon(Icons.delete))
+                icon: const Icon(Icons.delete)
+            ),
+
           ],
         ),
         body:
@@ -63,7 +77,8 @@ class _mainTaskPageState extends State<mainTaskPage> {
 
           //Listview here will simply list all of the different tasks collected earlier during the init state, or if the
           //page has been rebuilt with a new updated list.
-            child: ListView.builder(
+            child:
+            ListView.builder(
               itemCount: listTask.length,
               itemBuilder: (BuildContext context, int index){
                 return ListTile(
@@ -73,10 +88,31 @@ class _mainTaskPageState extends State<mainTaskPage> {
                   //This long press will open up and allow user to start the specific task based on the selected index.
                   onLongPress: (){
                     _selectedIndex = index;
-                    if(listTask[_selectedIndex].complete != 1){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskStart(taskList: listTask[_selectedIndex]))).then(onGoBack);
+                    if(listTask[_selectedIndex].complete != 1) {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) =>
+                          TaskStart(taskList: listTask[_selectedIndex])))
+                          .then(onGoBack);
+                      checkIfAllTasksDone();
+
+                    }else{
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text("Completed!"),
+                            content: Text("You have already completed this task for the week"),
+                            actions: [
+                              TextButton(
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                    checkIfAllTasksDone();
+                                  },
+                                  child: Text("Back"))
+                            ],
+                          )
+                      );
                     }
-                  },
+                    },
 
                   //Here on tap we just update the current selected index so that it can be referenced when deleting later.
                   onTap:(){
@@ -85,7 +121,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
                   }
                 );
               },
-            )
+            ),
         ),
 
         //This floatingActionButton is used to start the process of adding a new task
@@ -93,6 +129,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
           onPressed:_navigateToTaskAdd,
           child: const Icon(Icons.add),
         ),
+
       );
   }
 
@@ -138,4 +175,36 @@ class _mainTaskPageState extends State<mainTaskPage> {
   void _deleteTask(){
     _taskModel.deleteTodoWithId(selectedID).then(onGoBack);
   }
+
+
+  void checkIfAllTasksDone(){
+    int howManyDone = 0;
+    for(int i = 0; i < listTask.length; i ++ ){
+      if(listTask[i].complete ==1){
+        howManyDone++;
+      }
+    }
+
+    if(howManyDone == listTask.length){
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Congratulations"),
+            content: Text("Click the button below to claim your pet!"),
+            actions: [
+              TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                    checkIfAllTasksDone();
+                  },
+                  child: Text("Claim!"))
+            ],
+          )
+      );
+    }
+
+  }
+
+
+
 }
