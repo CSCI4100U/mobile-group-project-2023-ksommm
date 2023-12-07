@@ -38,7 +38,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
+  int runCheck = 0;
 
   Future<void> updateList() async {
     var _creature = CreatureModel();
@@ -111,9 +111,13 @@ class _HomePageState extends State<HomePage> {
             String creatureSelected = equippedCreature?.tempAsset ??
                 snapshot.data?['imageAsset'] as String;
 
-            updateList().then((value) async {
-              print('Load done');
-            });
+            if(runCheck == 0){
+              updateList().then((value) async {
+                print('Load done Monster');
+              });
+              runCheck++;
+            }
+
 
             return Stack(
               children: [

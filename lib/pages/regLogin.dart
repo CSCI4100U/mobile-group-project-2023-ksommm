@@ -165,69 +165,68 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-              Colors.blue.shade900,
-              Colors.blue.shade800,
-              Colors.blue.shade400,
-            ],
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [
+                Colors.blue.shade900,
+                Colors.blue.shade800,
+                Colors.blue.shade400,
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-
-          children: <Widget>[
-            const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      FadeInUp(
-                        duration: const Duration(milliseconds: 1150),
-                        child:
-                        const Text(
-                          "Welcome",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 1150),
+                          child: const Text(
+                            "Welcome",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      FadeInUp(
-                        duration: const Duration(milliseconds: 1500),
-                        child:
-                        const Text(
-                          "User!",
-                          style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+                        const SizedBox(height: 5),
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 1500),
+                          child: const Text(
+                            "User!",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 150,
-                    width: 150,
-                    child: FadeInUp(
-                      duration: const Duration(milliseconds: 1500),
-                      child: Image.asset('assets/catLol.png'),
+                      ],
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 150,
+                      width: 150,
+                      child: FadeInUp(
+                        duration: const Duration(milliseconds: 1500),
+                        child: Image.asset('assets/catLol.png'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 110),
-            Expanded(
-              child: Container(
+              const SizedBox(height: 110),
+              Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -237,31 +236,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(30),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Please input your details here",
-                          style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 30),
-                        _entryField('Email or Phone number', _controllerEmail),
-                        const SizedBox(height: 20),
-                        _entryField('Password', _controllerPassword),
-                        const SizedBox(height: 30),
-                        _errorMessage(),
-                        _submitButton(),
-                        const SizedBox(height: 150),
-                        _loginOrRegisterButton(),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Please input your details here",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 30),
+                      _entryField('Email or Phone number', _controllerEmail),
+                      const SizedBox(height: 20),
+                      _entryField('Password', _controllerPassword),
+                      const SizedBox(height: 30),
+                      _errorMessage(),
+                      _submitButton(),
+                      const SizedBox(height: 150),
+                      _loginOrRegisterButton(),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
