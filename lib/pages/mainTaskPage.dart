@@ -209,6 +209,11 @@ class _mainTaskPageState extends State<mainTaskPage> {
                     }
                     Navigator.pop(context);
                     Navigator.pop(context);
+
+                    List listTask = await _taskModel.getAllTasks();
+                    for(int i = 0; i < listCreature.length; i++){
+                      await _taskModel.deleteTodoWithId(listTask[i].id);
+                    }
                   },
                   child: Text("Claim!"))
             ],
