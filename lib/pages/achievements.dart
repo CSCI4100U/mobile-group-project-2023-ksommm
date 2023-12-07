@@ -6,6 +6,7 @@ class AchievementsPage extends StatefulWidget {
 }
 
 class _AchievementsPageState extends State<AchievementsPage> {
+  //predetermined stats for now
   int maxStreak = 22;
   int totalTasksCompleted = 25;
   int totalPets = 6;
@@ -17,7 +18,8 @@ class _AchievementsPageState extends State<AchievementsPage> {
     {'Award Name': 'Task Master', 'Desc': 'Finish 10 Tasks'},
     {'Award Name': 'The Zoo', 'Desc': 'Own 5 Pets'},
   ];
-
+//Determines whether the users stats have the nessecary requirements to complete the challenges
+  //Returns image to determine its completion
   String trophyUnlocked(int index, String awardName) {
     if (awardName.toLowerCase().contains('streak i') && maxStreak >= 3) {
       return 'assets/unlockedTrophy.png';

@@ -28,7 +28,7 @@ class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
-
+//Splash screen shown to user before going to the login screen
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
@@ -70,7 +70,7 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
+//Utilizes firestore auth service to determine if user can access the app (also intiailizes furtniture database)
 class _LoginScreenState extends State<LoginScreen> {
   String? errorMessage = '';
   bool isLogin = true;
@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
-
+  //adds user info to firestore if valid and then launches them to the home page
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _errorMessage() {
     return Text(errorMessage == '' ? '' : "Error: $errorMessage");
   }
-
+//Switch Case for whether a user wants to register or login an account, data will be switched based on that case
   Widget _submitButton() {
     return ElevatedButton(
       onPressed:

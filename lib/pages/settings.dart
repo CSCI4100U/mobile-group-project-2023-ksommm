@@ -37,6 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
               'Settings',
               style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
             ),
+            //Slider connected to main page, when adjusted will control the volume of the background music playing
             ListTile(
               title: Text('Music Volume: $volSlider'),
               subtitle: Slider(
