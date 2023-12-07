@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:main/pages/creatures.dart';
 import 'package:main/pages/taskStart.dart';
 
+import 'CreatureModel.dart';
 import 'Task.dart';
 import 'TaskForm.dart';
 import 'TaskModel.dart';
@@ -56,6 +58,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
                 for(int i = 0; i < listTask.length; i ++ ){
                   listTask[i].days = 7;
                   listTask[i].complete = 1;
+                  _taskModel.updateTask(listTask[i]);
                 }
                 checkIfAllTasksDone();
                 setState(() {
@@ -158,9 +161,12 @@ class _mainTaskPageState extends State<mainTaskPage> {
   Future _addList(List info) async{
     if (_lastInsertedId == null) {
       _lastInsertedId = 0;
+    }if(listTask.length !=0){
+      print("Here");
+      _lastInsertedId = listTask[listTask.length-1].id;
     }
     Task task = Task(id: _lastInsertedId + 1, name: info[0], description: info[1], time: info[2], days: 0, complete: 0);
-    if (id_counter != null) {
+    if (id_counter != null && listTask.length ==0) {
       task.id = id_counter;
     }
     _lastInsertedId = await _taskModel.insertTask(task).then(onGoBack);
@@ -190,8 +196,18 @@ class _mainTaskPageState extends State<mainTaskPage> {
             content: Text("Click the button below to claim your pet!"),
             actions: [
               TextButton(
-                  onPressed: (){
-                    print("Run the code here");
+                  onPressed: () async {
+                    var creatureModel = CreatureModel();
+                    List listCreature = await creatureModel.getAllCreatures();
+                    for(int i = 0; i < listCreature.length; i++){
+                      if(listCreature[i].obtained == 0){
+                        listCreature[i].obtained = 1;
+                        await creatureModel.updateCreature(listCreature[i]);
+                        break;
+                      }
+
+                    }
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   },
                   child: Text("Claim!"))
