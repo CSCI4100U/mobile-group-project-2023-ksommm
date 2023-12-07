@@ -39,13 +39,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  void initState(){
-    updateList().then((value) async {
-      print('Load done');
-    });
-    super.initState();
-  }
-
 
   Future<void> updateList() async {
     var _creature = CreatureModel();
@@ -95,6 +88,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     playMusic(50);
+
+
     return Scaffold(
       body: FutureBuilder(
         future: getLocationAndWeather(),
@@ -115,6 +110,10 @@ class _HomePageState extends State<HomePage> {
             String backgroundScreen = snapshot.data?['imageAsset'] as String;
             String creatureSelected = equippedCreature?.tempAsset ??
                 snapshot.data?['imageAsset'] as String;
+
+            updateList().then((value) async {
+              print('Load done');
+            });
 
             return Stack(
               children: [
