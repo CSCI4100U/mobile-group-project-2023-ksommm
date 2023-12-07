@@ -19,9 +19,8 @@ class _mainTaskPageState extends State<mainTaskPage> {
   List listTask = [];
   int id_counter = 0;
   int counter = 0;
-  var _task = TasksModel();
+  var _taskModel = TasksModel();
   var _lastInsertedId;
-  int id_counter = 0;
   int _selectedIndex = 0;
   int selectedID = 0;
 

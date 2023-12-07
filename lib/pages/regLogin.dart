@@ -267,28 +267,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
-
-<<<<<<< HEAD
-=======
-class TestWidget extends StatelessWidget {
-  final FirestoreService firestoreService = FirestoreService();
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: firestoreService.getUsersCollection().snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return CircularProgressIndicator();
-        }
-        // Use snapshot.data to access Firestore data
-        return Container();
-      },
-    );
-  }
-}
-
-
->>>>>>> main
