@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
 
+import 'Creature.dart';
+import 'CreatureModel.dart';
+
 class CreaturesPage extends StatefulWidget {
   @override
   _CreaturesPageState createState() => _CreaturesPageState();
 }
 
 class _CreaturesPageState extends State<CreaturesPage> {
-  List<InfoCreature> ownedCreatures = [
-    InfoCreature(
-      creatureName: 'koala',
-      tempAsset: 'https://i.pinimg.com/originals/2b/51/6d/2b516df24323c3803c66bdec7a714c20.gif',
-    ),
-    InfoCreature(
-      creatureName: 'scooby',
-      tempAsset: 'https://upload.wikimedia.org/wikipedia/en/b/b2/Pluto_%28Disney%29_transparent.png',
-    ),
-    InfoCreature(
-      creatureName: 'dogcat',
-      tempAsset: 'https://static.wikia.nocookie.net/p__/images/9/9b/CatDog_render.png/revision/latest?cb=20210110223051&path-prefix=protagonist',
-    ),
-    InfoCreature(
-      creatureName: 'big cheese',
-      tempAsset: 'https://cdn.pixabay.com/photo/2013/07/12/17/39/rat-152162_1280.png',
-    ),
-  ];
+  var creatureModel = CreatureModel();
+
+  List<InfoCreature> ownedCreatures = [];
+
+  @override
+  void initState(){
+    updateList().then((value) async {
+      print('Load done');
+    });
+    super.initState();
+  }
+
+  Future<void> updateList() async {
+    List listCreature = await creatureModel.getAllCreatures();
+    for(int i = 0; i < listCreature.length; i++){
+      if(listCreature[i].obtained == 1){
+        ownedCreatures.add(
+          InfoCreature(creatureName: listCreature[i].name, tempAsset: listCreature[i].asset)
+        );
+      }
+    }
+    setState(() {
+
+    });
+  }
+
+  @override
 
 
 
