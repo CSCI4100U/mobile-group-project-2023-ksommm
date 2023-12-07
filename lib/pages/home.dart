@@ -9,6 +9,7 @@ import 'package:main/pages/ItemsStore.dart';
 import 'package:main/pages/settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:convert';
+import 'package:main/pages/FurnitureModel.dart';
 
 import 'Creature.dart';
 import 'CreatureModel.dart';
@@ -33,46 +34,66 @@ class MyApp extends StatelessWidget {
 }
 
 class FurnitureItems extends StatelessWidget {
-  List furnitureList;
+  FurnituresModel furnitureModel = FurnituresModel();
 
-  FurnitureItems({super.key, required this.furnitureList});
+  FurnitureItems({super.key});
 
   final Map<String, Offset> positionMap = {
-    'left': const Offset(50.0, 50.0),
-    'right': const Offset(150.0, 150.0),
+    'left': const Offset(0, 400),
+    'right': const Offset(300, 400),
     // Add more positions and their corresponding coordinates
   };
 
-  // Returns list of furniture items that are selected
-  List getSelected() {
-    return furnitureList.where((furniture) => furniture.selected == 1).toList();
-  }
+  // // Returns list of furniture items that are selected
+  // List getSelected() {
+  //   return furnitureList.where((furniture) => furniture.selected == 1).toList();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    // Get list of only furniture with selected == 1 for displaying
-    List selectedFurniture =
-        furnitureList.where((furniture) => furniture.selected == 1).toList();
+
+
 
     // This stack places all selected furniture's images on screen
-    return Stack(
-      children: selectedFurniture.map((imageData) {
-        final String imageName = imageData['name'];
-        final String positionString = imageData['position'];
-        final Offset position = positionMap[positionString] ??
-            Offset
-                .zero; // Using positionMap to get the corresponding offset, defaulting to zero offset
+    return FutureBuilder(
+      future: furnitureModel.getAllFurnitures(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching data'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No images found'));
+        } else {
+          List furnitureList = snapshot.data!;
 
-        return Positioned(
-          left: position.dx, // X-coordinate based on position
-          top: position.dy, // Y-coordinate based on position
-          child: Image.asset(
-            'assets/images/$imageName.png',
-            width: 100,
-            height: 100,
-          ),
-        );
-      }).toList(),
+          // // Get list of only furniture with selected == 1 for displaying
+          List selectedFurniture =
+          furnitureList.where((furniture) => furniture.selected == 1).toList();
+          return Stack(
+            // create map of selected furniture and place them based on location
+            children: selectedFurniture.map((furnitureItem) {
+              final String imageName = furnitureItem.name;
+              final String positionString = furnitureItem.location;
+              final Offset position = positionMap[positionString] ??
+                  Offset
+                      .zero; // Using positionMap to get the corresponding offset, defaulting to zero offset
+              return Positioned(
+                left: position.dx, // X-coordinate based on position
+                top: position.dy, // Y-coordinate based on position
+                child: Transform.scale(
+                  scale: 2,
+                  child: Image.asset(
+                    'assets/images/$imageName.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        }
+      },
     );
   }
 }
@@ -91,30 +112,37 @@ class _HomePageState extends State<HomePage> {
     List<InfoCreature> ownedCreatures = [
       InfoCreature(
         creatureName: 'koala',
-        tempAsset: 'https://i.pinimg.com/originals/2b/51/6d/2b516df24323c3803c66bdec7a714c20.gif',
+        tempAsset:
+            'https://i.pinimg.com/originals/2b/51/6d/2b516df24323c3803c66bdec7a714c20.gif',
       ),
       InfoCreature(
         creatureName: 'scooby',
-        tempAsset: 'https://upload.wikimedia.org/wikipedia/en/b/b2/Pluto_%28Disney%29_transparent.png',
+        tempAsset:
+            'https://upload.wikimedia.org/wikipedia/en/b/b2/Pluto_%28Disney%29_transparent.png',
       ),
       InfoCreature(
         creatureName: 'dogcat',
-        tempAsset: 'https://static.wikia.nocookie.net/p__/images/9/9b/CatDog_render.png/revision/latest?cb=20210110223051&path-prefix=protagonist',
+        tempAsset:
+            'https://static.wikia.nocookie.net/p__/images/9/9b/CatDog_render.png/revision/latest?cb=20210110223051&path-prefix=protagonist',
       ),
       InfoCreature(
         creatureName: 'big cheese',
-        tempAsset: 'https://cdn.pixabay.com/photo/2013/07/12/17/39/rat-152162_1280.png',
+        tempAsset:
+            'https://cdn.pixabay.com/photo/2013/07/12/17/39/rat-152162_1280.png',
       ),
-
     ];
     var list = await _creature.getAllCreatures();
 
-    if(list.length == 0){
-      for(int i = 0; i < ownedCreatures.length; i++){
+    if (list.length == 0) {
+      for (int i = 0; i < ownedCreatures.length; i++) {
         print(ownedCreatures[i].creatureName);
         print(ownedCreatures[i].tempAsset);
 
-        Creature creature = new Creature(id: i+1, name: ownedCreatures[i].creatureName, asset: ownedCreatures[i].tempAsset, obtained: 0);
+        Creature creature = new Creature(
+            id: i + 1,
+            name: ownedCreatures[i].creatureName,
+            asset: ownedCreatures[i].tempAsset,
+            obtained: 0);
         _creature.insertCreature(creature);
       }
     }
@@ -122,7 +150,6 @@ class _HomePageState extends State<HomePage> {
       ownedCreatures = ownedCreatures;
     });
   }
-
 
   String? homePageBackgroundImage;
   InfoCreature? equippedCreature;
@@ -133,7 +160,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     playMusic(50);
-
 
     return Scaffold(
       body: FutureBuilder(
@@ -156,13 +182,12 @@ class _HomePageState extends State<HomePage> {
             String creatureSelected = equippedCreature?.tempAsset ??
                 snapshot.data?['imageAsset'] as String;
 
-            if(runCheck == 0){
+            if (runCheck == 0) {
               updateList().then((value) async {
                 print('Load done Monster');
               });
               runCheck++;
             }
-
 
             return Stack(
               children: [
@@ -200,6 +225,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                   ],
                 ),
+                Center(child: FurnitureItems()), // TODO: PLACE FURNITURE FUTUREBUILDER IN HERE
               ],
             );
           }
