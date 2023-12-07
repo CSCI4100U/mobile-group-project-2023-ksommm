@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:main/pages/Task/mainTaskPage.dart';
+import 'package:main/pages/mainTaskPage.dart';
 
 import 'Task.dart';
 import 'TaskModel.dart';

@@ -9,7 +9,7 @@ import 'package:main/pages/settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:convert';
 
-import 'Task/mainTaskPage.dart';
+import 'mainTaskPage.dart';
 import 'settings.dart';
 
 void main() {
