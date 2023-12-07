@@ -193,7 +193,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
           context: context,
           builder: (context) => AlertDialog(
             title: Text("Congratulations"),
-            content: Text("Click the button below to claim your pet!"),
+            content: Text("Click the button below to claim your pet! Once claimed your pet can be seen in your pets section."),
             actions: [
               TextButton(
                   onPressed: () async {
