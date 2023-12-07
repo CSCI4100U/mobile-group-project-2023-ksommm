@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:main/pages/mainTaskPage.dart';
 
 import 'Task.dart';
+import 'TaskModel.dart';
 
 
 
@@ -137,6 +139,31 @@ class _TaskStartState extends State<TaskStart> {
       final seconds = duration.inSeconds + removeSecond;
       if(seconds < 0){
         timer?.cancel();
+
+        //Here a dialog box which lists the task information is listed
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(widget.taskList.name.toString()),
+              content: Text("Congratulations, you have completed your task ${widget.taskList.name} and are one more step closer to claiming your pet!"),
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      TasksModel taskModel = new TasksModel();
+                        widget.taskList.days = widget.taskList.days! + 1;
+                        print(widget.taskList);
+                        if(widget.taskList.days! + 1 == 8){
+                          widget.taskList.complete = 1;
+                        }
+                        await taskModel.updateTask(widget.taskList);
+                        print(widget.taskList.complete);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                    },
+                    child: Text("Claim Day"))
+              ],
+            )
+        );
       }else{
         duration = Duration(seconds: seconds);
       }

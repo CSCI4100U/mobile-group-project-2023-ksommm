@@ -19,8 +19,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
   List listTask =[];
   var _taskModel = TasksModel();
   var _lastInsertedId;
-
-  int index = 0;
+  int id_counter = 0;
   int _selectedIndex = 0;
   int selectedID = 0;
 
@@ -41,7 +40,6 @@ class _mainTaskPageState extends State<mainTaskPage> {
       _lastInsertedId = listTask[listTask.length-1].id!;
     }
     setState(() {
-
     });
   }
 
@@ -51,7 +49,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
     return
       Scaffold(
         appBar: AppBar(
-          title: Text("Task List Page",
+          title: const Text("Task List Page",
               style: TextStyle(color: Colors.white, fontSize: 25)),
           actions: [
             IconButton(onPressed: (){
@@ -68,23 +66,23 @@ class _mainTaskPageState extends State<mainTaskPage> {
             child: ListView.builder(
               itemCount: listTask.length,
               itemBuilder: (BuildContext context, int index){
-                print(listTask[index]);
-                return new ListTile(
+                return ListTile(
                   title: Text(listTask[index].name!),
-                  subtitle: Text(listTask[index].description! + ",  Total time set: "+ listTask[index].time!),
+                  subtitle: Text("Description: " + listTask[index].description! + "\nTotal time set: "+ listTask[index].time.split(":")[1] + " mins \nTotal amount of days completed: " + listTask[index].days!.toString()),
 
                   //This long press will open up and allow user to start the specific task based on the selected index.
                   onLongPress: (){
                     _selectedIndex = index;
-                    selectedID = listTask[_selectedIndex].id;
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskStart(taskList: listTask[_selectedIndex])));
+                    if(listTask[_selectedIndex].complete != 1){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskStart(taskList: listTask[_selectedIndex]))).then(onGoBack);
+                    }
                   },
 
                   //Here on tap we just update the current selected index so that it can be referenced when deleting later.
                   onTap:(){
                     _selectedIndex = index;
                     selectedID = listTask[_selectedIndex].id;
-                  } ,
+                  }
                 );
               },
             )
@@ -102,6 +100,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
   //After information is collected such as id and name, etc. the information is passed to a new function to add to the database later.
   Future _navigateToTaskAdd() async{
     List information =  (await Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskForm())) as List);
+    id_counter++;
     _addList(information);
 
   }
@@ -128,7 +127,10 @@ class _mainTaskPageState extends State<mainTaskPage> {
       _lastInsertedId = 0;
     }
     Task task = Task(id: _lastInsertedId + 1, name: info[0], description: info[1], time: info[2], days: 0, complete: 0);
-
+    if (id_counter != null) {
+      task.id = id_counter;
+    }
+    _lastInsertedId = await _taskModel.insertTask(task).then(onGoBack);
     _lastInsertedId = await _taskModel.insertTask(task).then(onGoBack);
   }
 

@@ -29,6 +29,17 @@ class TasksModel{
     return result;
   }
 
+  Future<int> updateTask(Task task) async{
+    final db = await DBUtils.init();
+    return db.update(
+      'task_items',
+      task.toMap(),
+      where: 'id = ?',
+      whereArgs: [task.id],
+    );
+  }
+
+
   Future<int> deleteTodoWithId(int id) async{
     //This needs to be present in any queries, updates, etc.
     //you do with your database
