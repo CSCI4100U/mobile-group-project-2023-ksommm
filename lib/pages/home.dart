@@ -51,6 +51,9 @@ class FurnitureItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     // This stack places all selected furniture's images on screen
     return FutureBuilder(
       future: furnitureModel.getAllFurnitures(),
@@ -65,9 +68,8 @@ class FurnitureItems extends StatelessWidget {
           List furnitureList = snapshot.data!;
 
           // // Get list of only furniture with selected == 1 for displaying
-          List selectedFurniture = furnitureList
-              .where((furniture) => furniture.selected == 1)
-              .toList();
+          List selectedFurniture =
+          furnitureList.where((furniture) => furniture.selected == 1).toList();
           return Stack(
             // create map of selected furniture and place them based on location
             children: selectedFurniture.map((furnitureItem) {
@@ -223,8 +225,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                   ],
                 ),
-                Center(child: FurnitureItems()),
-                // TODO: PLACE FURNITURE FUTUREBUILDER IN HERE
+                Center(child: FurnitureItems()), // TODO: PLACE FURNITURE FUTUREBUILDER IN HERE
               ],
             );
           }

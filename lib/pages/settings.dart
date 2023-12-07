@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:main/storage/firestore_service.dart';
 
 AudioPlayer audioPlayer = AudioPlayer();
-int volSlider = 50;
+int volSlider=50;
 
 class SettingsPage extends StatefulWidget {
   final Function(int) playMusic;
@@ -53,27 +52,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const Divider(),
-            // Take table from sqlite and replace firestore
             ElevatedButton(
               onPressed: () {
-                FirestoreService firestoreService = FirestoreService();
-                firestoreService.replaceSqliteWithFirestore();
-              },
-              child: const Text('Save Monsters and Furniture to Cloud'),
-            ),
-            // Take table from firestore and replace sqlite
-            ElevatedButton(
-              onPressed: () {
-                FirestoreService firestoreService = FirestoreService();
-                firestoreService.replaceFirestoreWithSqlite();
-              },
-              child: const Text('Load Monsters and Furniture from Cloud'),
-            ),
-            const Divider(),
-            ElevatedButton(
-              onPressed: () {
-                _showDialog(context, 'Privacy Policy',
-                    'Selling back to you for \$3.99');
+                _showDialog(context, 'Privacy Policy', 'Selling back to you for \$3.99');
               },
               child: const Text('Privacy Policy'),
             ),
