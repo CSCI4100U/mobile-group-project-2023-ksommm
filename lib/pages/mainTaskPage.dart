@@ -193,7 +193,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
           context: context,
           builder: (context) => AlertDialog(
             title: Text("Congratulations"),
-            content: Text("Click the button below to claim your pet!"),
+            content: Text("Click the button below to claim your pet! Once claimed your pet can be seen in your pets section."),
             actions: [
               TextButton(
                   onPressed: () async {
@@ -209,6 +209,11 @@ class _mainTaskPageState extends State<mainTaskPage> {
                     }
                     Navigator.pop(context);
                     Navigator.pop(context);
+
+                    List listTask = await _taskModel.getAllTasks();
+                    for(int i = 0; i < listCreature.length; i++){
+                      await _taskModel.deleteTodoWithId(listTask[i].id);
+                    }
                   },
                   child: Text("Claim!"))
             ],
