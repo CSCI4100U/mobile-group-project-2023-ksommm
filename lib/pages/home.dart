@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     playMusic(0);
+    playMusic(50);
     return Scaffold(
       body: FutureBuilder(
         future: getLocationAndWeather(),
@@ -61,6 +62,8 @@ class _HomePageState extends State<HomePage> {
             String backgroundScreen = snapshot.data?['imageAsset'] as String;
             String creatureSelected = equippedCreature?.tempAsset ??
                 snapshot.data?['imageAsset'] as String;
+            String creatureSelected =
+                equippedCreature?.tempAsset ?? snapshot.data?['imageAsset'] as String;
 
             return Stack(
               children: [
@@ -201,6 +204,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
     else {
+    } else {
       throw Exception("No location available");
     }
 
@@ -208,6 +212,7 @@ class _HomePageState extends State<HomePage> {
     String urlAPI =
         'http://api.weatherapi.com/v1/current.json?key=$ourSecretAPIKey&q=${pos
         .latitude},${pos.longitude}';
+        'http://api.weatherapi.com/v1/current.json?key=$ourSecretAPIKey&q=${pos.latitude},${pos.longitude}';
 
     final response = await http.get(Uri.parse(urlAPI));
     if (response.statusCode == 200) {

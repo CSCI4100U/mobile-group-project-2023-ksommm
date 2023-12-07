@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 
 AudioPlayer audioPlayer = AudioPlayer();
+int volSlider=50;
+
 class SettingsPage extends StatefulWidget {
   final Function(int) playMusic;
 
@@ -38,7 +39,10 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text('Settings'),
       ),
       body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text('Music: $volSlider'),
             Slider(
@@ -52,8 +56,38 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               min: 0,
               max: 100,
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, size: 35),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             ),
             TextButton(
+            const Text(
+              'Settings',
+              style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              title: Text('Music Volume: $volSlider'),
+              subtitle: Slider(
+                value: volSlider.toDouble(),
+                onChanged: (newValue) {
+                  setState(() {
+                    volSlider = newValue.toInt();
+                    audioPlayer.setVolume(volSlider / 100);
+                    widget.playMusic(volSlider);
+                  });
+                },
+                min: 0,
+                max: 100,
+              ),
+            ),
+            const Divider(),
+            ElevatedButton(
               onPressed: () {
                 showDialog(
                   context: context,
@@ -72,10 +106,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     );
                   },
                 );
+                _showDialog(context, 'Privacy Policy', 'Selling back to you for \$3.99');
               },
               child: Text('Privacy Policy'),
+              child: const Text('Privacy Policy'),
             ),
             TextButton(
+            ElevatedButton(
               onPressed: () {
                 showDialog(
                   context: context,
@@ -94,18 +131,45 @@ class _SettingsPageState extends State<SettingsPage> {
                     );
                   },
                 );
+                _showDialog(context, 'Credits', 'matthew, keeran, omar');
               },
               child: Text('Credits'),
+              child: const Text('Credits'),
             ),
             const Expanded(
               child: Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: Text("We really in beta mode rn"),
               ),
+            const Spacer(),
+            const Text(
+              "We're really in beta mode right now",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showDialog(BuildContext context, String title, String content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class CreaturesPage extends StatefulWidget {
   @override
@@ -8,6 +7,7 @@ class CreaturesPage extends StatefulWidget {
 
 class _CreaturesPageState extends State<CreaturesPage> {
    List<InfoCreature> ownedCreatures = [
+  List<InfoCreature> ownedCreatures = [
     InfoCreature(
       creatureName: 'koala',
       tempAsset: 'https://i.pinimg.com/originals/2b/51/6d/2b516df24323c3803c66bdec7a714c20.gif',
@@ -27,6 +27,7 @@ class _CreaturesPageState extends State<CreaturesPage> {
   ];
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +43,102 @@ class _CreaturesPageState extends State<CreaturesPage> {
               ownedCreatures[num].tempAsset,
               width: 50,
               height: 50,
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 0.92),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              margin: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, size: 35),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Let\'s pick your pet from the litter',
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 35),
+                  const Text(
+                    'All your owned creatures',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+
+              color: const Color.fromRGBO(243, 243,243, 1.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemCount: ownedCreatures.length,
+                primary: false,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(232, 229, 220, 1.0),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            equipCreature(context, index);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              children: [
+                                Image.network(
+                                  ownedCreatures[index].tempAsset,
+                                  width: 250,
+                                  height: 100,
+                                ),
+                                Text(
+                                  ownedCreatures[index].creatureName,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
             title: Text(ownedCreatures[num].creatureName),
             subtitle: ownedCreatures[num].status
@@ -49,6 +146,8 @@ class _CreaturesPageState extends State<CreaturesPage> {
                 : null,
           );
         },
+          ],
+        ),
       ),
     );
   }
@@ -100,4 +199,4 @@ class InfoCreature {
     required this.tempAsset,
     this.status = false,
   });
-}
+}}
