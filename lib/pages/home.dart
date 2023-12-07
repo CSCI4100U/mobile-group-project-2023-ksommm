@@ -38,6 +38,10 @@ class _HomePageState extends State<HomePage> {
   String? homePageBackgroundImage;
   InfoCreature? equippedCreature;
 
+  Widget furniture() {
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     playMusic(0);
