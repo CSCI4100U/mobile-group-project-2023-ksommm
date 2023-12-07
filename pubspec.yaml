@@ -51,6 +51,7 @@ flutter:
     - assets/unlockedTrophy.png
     - assets/lockedTrophy.png
     - assets/backgroundAudio.wav
+    - assets/images/
 
 flutter_native_splash:
       image: assets/catLol.png

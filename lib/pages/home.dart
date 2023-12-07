@@ -29,6 +29,51 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class FurnitureItems extends StatelessWidget {
+  List furnitureList;
+
+  FurnitureItems({super.key, required this.furnitureList});
+
+  final Map<String, Offset> positionMap = {
+    'left': const Offset(50.0, 50.0),
+    'right': const Offset(150.0, 150.0),
+    // Add more positions and their corresponding coordinates
+  };
+
+  // Returns list of furniture items that are selected
+  List getSelected() {
+    return furnitureList.where((furniture) => furniture.selected == 1).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Get list of only furniture with selected == 1 for displaying
+    List selectedFurniture =
+        furnitureList.where((furniture) => furniture.selected == 1).toList();
+
+    // This stack places all selected furniture's images on screen
+    return Stack(
+      children: selectedFurniture.map((imageData) {
+        final String imageName = imageData['name'];
+        final String positionString = imageData['position'];
+        final Offset position = positionMap[positionString] ??
+            Offset
+                .zero; // Using positionMap to get the corresponding offset, defaulting to zero offset
+
+        return Positioned(
+          left: position.dx, // X-coordinate based on position
+          top: position.dy, // Y-coordinate based on position
+          child: Image.asset(
+            'assets/images/$imageName.png',
+            width: 100,
+            height: 100,
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -40,10 +85,6 @@ class _HomePageState extends State<HomePage> {
   AudioPlayer audioPlayer = AudioPlayer();
 
   int _selectedIndex = 0;
-
-  Widget furniture() {
-    return Container();
-  }
 
   @override
   Widget build(BuildContext context) {
