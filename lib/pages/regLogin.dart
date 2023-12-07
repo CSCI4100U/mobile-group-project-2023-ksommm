@@ -268,10 +268,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-
-
-<<<<<<< HEAD
-=======
 class TestWidget extends StatelessWidget {
   final FirestoreService firestoreService = FirestoreService();
 
@@ -289,6 +285,3 @@ class TestWidget extends StatelessWidget {
     );
   }
 }
-
-
->>>>>>> main
