@@ -37,12 +37,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? homePageBackgroundImage;
   InfoCreature? equippedCreature;
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< Updated upstream
     playMusic(0);
-    playMusic(50);
+
     return Scaffold(
       body: FutureBuilder(
         future: getLocationAndWeather(),
@@ -63,8 +65,6 @@ class _HomePageState extends State<HomePage> {
             String backgroundScreen = snapshot.data?['imageAsset'] as String;
             String creatureSelected = equippedCreature?.tempAsset ??
                 snapshot.data?['imageAsset'] as String;
-            String creatureSelected =
-                equippedCreature?.tempAsset ?? snapshot.data?['imageAsset'] as String;
 
             return Stack(
               children: [
@@ -100,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
+                    // ... (existing code for buttons is removed)
                   ],
                 ),
               ],
@@ -107,7 +108,70 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.blue,
+        currentIndex: _selectedIndex,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.white,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pets),
+            label: 'Pets',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.weekend),
+            label: 'Furniture',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+            label: 'Tasks',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.emoji_events),
+            label: 'Trophies',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, color: Colors.white),
+            label: 'Settings',
+          ),
+        ],
+      ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        _navigateToCreaturesPage();
+        break;
+      case 1:
+        _navigateToFurnitureStore();
+        break;
+      case 2:
+        _navigateToTasksPage();
+        break;
+      case 3:
+        _navigateToAchievementsPage();
+        break;
+      case 4:
+        _navigateToSettingsPage();
+        break;
+    }
+  }
+
+  Future<void> playMusic(int volSlider) async {
+    if (!audioPlayer.playing) {
+      await audioPlayer.setAsset('assets/backgroundAudio.wav');
+      audioPlayer.play();
+      audioPlayer.setVolume(volSlider / 100);
+      audioPlayer.setLoopMode(LoopMode.one);
+    }
   }
 
   Future<Map<String, dynamic>> getLocationAndWeather() async {
@@ -117,17 +181,12 @@ class _HomePageState extends State<HomePage> {
       pos = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-    }
-    else {
-=======
     } else {
       throw Exception("No location available");
     }
 
     String ourSecretAPIKey = 'd4d679ec60a64104b28103140231011';
     String urlAPI =
-        'http://api.weatherapi.com/v1/current.json?key=$ourSecretAPIKey&q=${pos
-        .latitude},${pos.longitude}';
         'http://api.weatherapi.com/v1/current.json?key=$ourSecretAPIKey&q=${pos.latitude},${pos.longitude}';
 
     final response = await http.get(Uri.parse(urlAPI));
@@ -218,12 +277,51 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> playMusic(int volSlider) async {
-    if (!audioPlayer.playing) {
-      await audioPlayer.setAsset('assets/backgroundAudio.wav');
-      audioPlayer.play();
-      audioPlayer.setVolume(volSlider / 100);
-      audioPlayer.setLoopMode(LoopMode.one);
+  void _navigateToCreaturesPage() async {
+    final selectedCreature = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CreaturesPage(),
+      ),
+    );
+    if (selectedCreature != null) {
+      setState(() {
+        equippedCreature = selectedCreature;
+      });
     }
+  }
+
+  void _navigateToFurnitureStore() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FurnitureStore(),
+      ),
+    );
+  }
+
+  void _navigateToTasksPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => mainTaskPage(),
+      ),
+    );
+  }
+
+  void _navigateToAchievementsPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AchievementsPage(),
+      ),
+    );
+  }
+
+  void _navigateToSettingsPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SettingsPage(playMusic: (volSlider) {
+          playMusic(volSlider);
+        }),
+      ),
+    );
   }
 }
