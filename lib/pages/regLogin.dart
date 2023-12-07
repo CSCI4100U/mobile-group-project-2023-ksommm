@@ -6,8 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:main/storage/auth.dart';
 import 'package:main/pages/home.dart';
 import 'package:main/storage/firestore_service.dart';
-
-
+import 'package:main/pages/FurnitureModel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +41,6 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +64,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -85,6 +82,14 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await Auth().signInWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
+
+      // if furniture database is empty, we add all furniture as unselected
+      FurnituresModel furnitureModel = FurnituresModel();
+      if (await furnitureModel.dbIsEmpty()) {
+        await furnitureModel.addDefaultFurniture();
+      }
+      print(furnitureModel.getAllFurnitures());
+
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => HomePage(),
@@ -118,9 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _entryField(
-      String title,
-      TextEditingController controller,
-      ) {
+    String title,
+    TextEditingController controller,
+  ) {
     return TextField(
         controller: controller,
         decoration: InputDecoration(
@@ -134,7 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed: isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
+      onPressed:
+          isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
@@ -148,8 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
-
   Widget _loginOrRegisterButton() {
     return TextButton(
       onPressed: () {
@@ -160,7 +164,6 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Text(isLogin ? 'Register Instead' : 'Login instead'),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
