@@ -165,6 +165,8 @@ class _HomePageState extends State<HomePage> {
       body: FutureBuilder(
         future: getLocationAndWeather(),
         builder: (context, snapshot) {
+          //Determines if the API call is functional and will allow for their to be a background image
+          // to display the current weather
           if (!snapshot.hasData && !snapshot.hasError) {
             return Image.asset(
               'assets/background.png',
@@ -179,6 +181,7 @@ class _HomePageState extends State<HomePage> {
             String weatherStats = snapshot.data?['weatherResults'] as String;
             String coords = snapshot.data?['location'] as String;
             String backgroundScreen = snapshot.data?['imageAsset'] as String;
+            //determines if there is a creautre already equipped and if so displays it
             String creatureSelected = equippedCreature?.tempAsset ??
                 snapshot.data?['imageAsset'] as String;
 
@@ -223,43 +226,49 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
+
                   ],
                 ),
                 Center(child: FurnitureItems()), // TODO: PLACE FURNITURE FUTUREBUILDER IN HERE
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    backgroundColor: Colors.blue,
+                    currentIndex: _selectedIndex,
+                    unselectedItemColor: Colors.white,
+                    selectedItemColor: Colors.white,
+                    onTap: _onItemTapped,
+                    items: const <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.pets),
+                        label: 'Pets',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.weekend),
+                        label: 'Furniture',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.assignment),
+                        label: 'Tasks',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.emoji_events),
+                        label: 'Trophies',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.settings, color: Colors.white),
+                        label: 'Settings',
+                      ),
+                    ],
+                  ),
+                ),
               ],
             );
           }
         },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue,
-        currentIndex: _selectedIndex,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.white,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pets),
-            label: 'Pets',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.weekend),
-            label: 'Furniture',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assignment),
-            label: 'Tasks',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
-            label: 'Trophies',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings, color: Colors.white),
-            label: 'Settings',
-          ),
-        ],
       ),
     );
   }
@@ -287,7 +296,7 @@ class _HomePageState extends State<HomePage> {
         break;
     }
   }
-
+  //Loops Background Audio while the app is running
   Future<void> playMusic(int volSlider) async {
     if (!audioPlayer.playing) {
       await audioPlayer.setAsset('assets/backgroundAudio.wav');
@@ -296,7 +305,7 @@ class _HomePageState extends State<HomePage> {
       audioPlayer.setLoopMode(LoopMode.one);
     }
   }
-
+//request users for their location to be able ot get a background screen that shows their weather
   Future<Map<String, dynamic>> getLocationAndWeather() async {
     var perms = await Permission.location.request();
     Position pos;
