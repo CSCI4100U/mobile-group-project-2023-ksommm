@@ -1,5 +1,4 @@
 import 'package:duration_picker/duration_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TaskForm extends StatefulWidget {
@@ -21,7 +20,7 @@ class _TaskFormState extends State<TaskForm> {
     return
       Scaffold(
         appBar: AppBar(
-          title: Text("Add Task",
+          title: const Text("Add Task",
               style: TextStyle(color: Colors.white, fontSize: 25),
               textAlign: TextAlign.center),
         ),
@@ -30,16 +29,16 @@ class _TaskFormState extends State<TaskForm> {
           child: Column(
             children: [
               //Here the user is asked to enter the task name. The Textfield below is the name value and the value that is entered is saved.
-              Padding(
+              const Padding(
                   padding: EdgeInsets.only(top: 100, bottom: 20, left: 15, right: 15),
                   child:
                   Text("Enter the name or title of task!: ")
               ),
               Padding(
-                  padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
+                  padding:const EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
                   child:
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: "Enter Task Name"
                     ),
@@ -53,16 +52,16 @@ class _TaskFormState extends State<TaskForm> {
 
 
               //Here the user is asked to enter the task description. The Textfield below is the description value and the value that is entered is saved.
-              Padding(
+              const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 20, left: 15, right: 15),
                   child:
                   Text("Enter the description of the task: ")
               ),
               Padding(
-                  padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
+                  padding:const EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
                   child:
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: "Enter Task Description"
                     ),
@@ -74,13 +73,13 @@ class _TaskFormState extends State<TaskForm> {
                   )
               ),
 
-              //Here is a button that brings up a wheel for selecting the time. Scaffold messenger is used to show user the selected time.
+              //Here a button is created that brings up a wheel for selecting the time. Scaffold messenger is used to show user the selected time.
               Padding(
-                  padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
+                  padding:const EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
                   child:
                   ElevatedButton(
                     onPressed: () async{
-                      var duration = await showDurationPicker(context: context, initialTime: Duration(minutes: 30));
+                      var duration = await showDurationPicker(context: context, initialTime: const Duration(minutes: 30));
                       durationSelected = duration;
 
                       if(durationSelected != Null){
@@ -90,7 +89,7 @@ class _TaskFormState extends State<TaskForm> {
                             )));
                       }
                     },
-                    child: Text("Choose time limit"),
+                    child: const Text("Choose time limit"),
                   )
               ),
 
@@ -100,7 +99,7 @@ class _TaskFormState extends State<TaskForm> {
               //This button calls a function to return back to main page with the entered information to save it
               ElevatedButton(
                   onPressed: _addTask,
-                  child: Icon(Icons.save_outlined))
+                  child: const Icon(Icons.save_outlined))
             ],
           ),
         )
@@ -116,19 +115,19 @@ class _TaskFormState extends State<TaskForm> {
 
     if(name == null){
       ScaffoldMessenger.of(context).showSnackBar((
-          SnackBar(
+          const SnackBar(
               content:Text("Please enter a name")
 
           )));
     }else if(description == null){
       ScaffoldMessenger.of(context).showSnackBar((
-          SnackBar(
+          const SnackBar(
               content:Text("Please enter a description")
 
           )));
     }else if(durationSelected == null){
       ScaffoldMessenger.of(context).showSnackBar((
-          SnackBar(
+          const SnackBar(
               content:Text("Please select a duration of time")
 
           )));

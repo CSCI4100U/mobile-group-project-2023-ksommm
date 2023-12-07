@@ -2,9 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:main/pages/mainTaskPage.dart';
 
 import 'Task.dart';
+import 'TaskModel.dart';
 
+
+//This is the page where the task gets started.
 class TaskStart extends StatefulWidget {
   Task taskList;
 
@@ -59,7 +63,6 @@ class _TaskStartState extends State<TaskStart> {
         body: Center(
             child: Column(
               children: [
-
                 //Here we list the title/name of the task opened
                 Padding(padding: EdgeInsets.only(top: 10),
                   child: Text("Task Name: " + widget.taskList.name!,
@@ -107,17 +110,18 @@ class _TaskStartState extends State<TaskStart> {
 
 //This is the widget that will build the timer being shown
   Widget buildTime(){
-    final mins = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final secs = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    final min = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final sec = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
 
     //This is the text box widget that draws to the user on the page the timer count down as it gets updated.
     return Text(
-      '$mins:$secs',
+      '$min:$sec',
       style: TextStyle(fontSize: 50),
     );
   }
 
   //Here the timer is started, and checks are added to ensure once started it cannot be started again
+  //Note: To create timer referenced following video: https://www.youtube.com/watch?v=Bw6zc1nncyA
   void startTimer(){
     if(timer == null ){
       timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
@@ -134,6 +138,31 @@ class _TaskStartState extends State<TaskStart> {
       final seconds = duration.inSeconds + removeSecond;
       if(seconds < 0){
         timer?.cancel();
+
+        //Here a dialog box which lists the task information is listed
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(widget.taskList.name.toString()),
+              content: Text("Congratulations, you have completed your task ${widget.taskList.name} and are one more step closer to claiming your pet!"),
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      TasksModel taskModel = new TasksModel();
+                        widget.taskList.days = widget.taskList.days! + 1;
+                        print(widget.taskList);
+                        if(widget.taskList.days! + 1 == 8){
+                          widget.taskList.complete = 1;
+                        }
+                        await taskModel.updateTask(widget.taskList);
+                        print(widget.taskList.complete);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                    },
+                    child: Text("Claim Day"))
+              ],
+            )
+        );
       }else{
         duration = Duration(seconds: seconds);
       }
