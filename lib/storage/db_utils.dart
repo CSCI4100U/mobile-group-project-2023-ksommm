@@ -8,12 +8,11 @@ class DBUtils{
       path.join(await getDatabasesPath(), 'task_manager.db'),
       onCreate: (db, version){
         db.execute(
-            'CREATE TABLE task_items (id INTEGER PRIMARY KEY, name TEXT, description TEXT, time TEXT)'
+            'CREATE TABLE task_items (id INTEGER PRIMARY KEY, name TEXT, description TEXT, time TEXT, days INT, complete INT)'
         );
       },
       version: 1,
     );
-
     print("Created DB $database");
     return database;
   }

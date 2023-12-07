@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:main/storage/auth.dart';
 import 'package:main/pages/home.dart';
+import 'package:main/storage/firestore_service.dart';
 
 
 
@@ -267,5 +268,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+
+
+class TestWidget extends StatelessWidget {
+  final FirestoreService firestoreService = FirestoreService();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: firestoreService.getUsersCollection().snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        // Use snapshot.data to access Firestore data
+        return Container();
+      },
+    );
+  }
+}
 
 

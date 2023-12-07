@@ -25,83 +25,93 @@ class _TaskFormState extends State<TaskForm> {
               style: TextStyle(color: Colors.white, fontSize: 25),
               textAlign: TextAlign.center),
         ),
-        body: Column(
-          children: [
-            Padding(
-                padding: EdgeInsets.only(top: 100, bottom: 20, left: 15, right: 15),
-                child:
-                Text("Enter the name or title of task!: ")
-            ),
-            Padding(
-                padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
-                child:
-                TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Enter Task Name"
-                  ),
-                  onChanged: (value){
-                    setState(() {
-                      name = value;
-                    });
-                  },
-                )
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: 20, bottom: 20, left: 15, right: 15),
-                child:
-                Text("Enter the description of the task: ")
-            ),
-            Padding(
-                padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
-                child:
-                TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Enter Task Description"
-                  ),
-                  onChanged: (value){
-                    setState(() {
-                      description = value;
-                    });
-                  },
-                )
-            ),
-            Padding(
-                padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
-                child:
-                ElevatedButton(
-                  onPressed: () async{
-                    var duration = await showDurationPicker(context: context, initialTime: Duration(minutes: 30));
-
-                    durationSelected = duration;
-
-                    if(durationSelected != Null){
-                      //Prints the time selected to the Snackbar if time is not null
-                      ScaffoldMessenger.of(context).showSnackBar((
-                          SnackBar(
-                              content:Text("Time selected: $duration")
-
-                          )));
-                    }
-                  },
-                  child: Text("Choose time limit"),
-                )
-            ),
+        body:
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              //Here the user is asked to enter the task name. The Textfield below is the name value and the value that is entered is saved.
+              Padding(
+                  padding: EdgeInsets.only(top: 100, bottom: 20, left: 15, right: 15),
+                  child:
+                  Text("Enter the name or title of task!: ")
+              ),
+              Padding(
+                  padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
+                  child:
+                  TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Enter Task Name"
+                    ),
+                    onChanged: (value){
+                      setState(() {
+                        name = value;
+                      });
+                    },
+                  )
+              ),
 
 
+              //Here the user is asked to enter the task description. The Textfield below is the description value and the value that is entered is saved.
+              Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 20, left: 15, right: 15),
+                  child:
+                  Text("Enter the description of the task: ")
+              ),
+              Padding(
+                  padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
+                  child:
+                  TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Enter Task Description"
+                    ),
+                    onChanged: (value){
+                      setState(() {
+                        description = value;
+                      });
+                    },
+                  )
+              ),
+
+              //Here is a button that brings up a wheel for selecting the time. Scaffold messenger is used to show user the selected time.
+              Padding(
+                  padding:EdgeInsets.only(top: 0, bottom: 20, left: 15, right: 15),
+                  child:
+                  ElevatedButton(
+                    onPressed: () async{
+                      var duration = await showDurationPicker(context: context, initialTime: Duration(minutes: 30));
+                      durationSelected = duration;
+
+                      if(durationSelected != Null){
+                        ScaffoldMessenger.of(context).showSnackBar((
+                            SnackBar(
+                                content:Text("Time selected: $duration")
+                            )));
+                      }
+                    },
+                    child: Text("Choose time limit"),
+                  )
+              ),
 
 
 
-            ElevatedButton(
-                onPressed: _addTask,
-                child: Icon(Icons.save_outlined))
-          ],
-        ),
+
+              //This button calls a function to return back to main page with the entered information to save it
+              ElevatedButton(
+                  onPressed: _addTask,
+                  child: Icon(Icons.save_outlined))
+            ],
+          ),
+        )
+
       );
   }
 
 
+  //Here the addTask function is calls, where if none of the values
+  //are left empty then the page gets popped with a list of the correct
+  //values.
   Future _addTask() async{
 
     if(name == null){
