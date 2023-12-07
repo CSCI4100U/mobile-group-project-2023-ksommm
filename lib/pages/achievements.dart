@@ -14,7 +14,7 @@ class _AchievementsPageState extends State<AchievementsPage> {
     {'Award Name': 'Streak I', 'Desc': 'Complete 3 Tasks In a Row'},
     {'Award Name': 'Streak II', 'Desc': 'Complete 10 Tasks In a Row'},
     {'Award Name': 'Streak III', 'Desc': 'Complete 15 Tasks In a Row'},
-    {'Award Name': 'Task Completionist', 'Desc': 'Finish 10 Tasks'},
+    {'Award Name': 'Task Master', 'Desc': 'Finish 10 Tasks'},
     {'Award Name': 'The Zoo', 'Desc': 'Own 5 Pets'},
   ];
 
@@ -31,7 +31,7 @@ class _AchievementsPageState extends State<AchievementsPage> {
       return 'assets/unlockedTrophy.png';
     }
 
-    if (awardName.toLowerCase().contains('task completionist') && totalTasksCompleted >= 10) {
+    if (awardName.toLowerCase().contains('Task Master') && totalTasksCompleted >= 10) {
       return 'assets/unlockedTrophy.png';
     }
 
@@ -76,9 +76,9 @@ class _AchievementsPageState extends State<AchievementsPage> {
             child: GridView.builder(
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
+                crossAxisCount: 4,
+                crossAxisSpacing: 6.0,
+                mainAxisSpacing: 6.0,
               ),
               itemCount: challenges.length,
               itemBuilder: (context, index) {
@@ -107,7 +107,7 @@ class _AchievementsPageState extends State<AchievementsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          radius: 50.0,
+                          radius: 20.0,
                           backgroundImage: AssetImage(trophyUnlocked(index, challenges[index]['Award Name']!)),
                         ),
                         const SizedBox(height: 8.0),

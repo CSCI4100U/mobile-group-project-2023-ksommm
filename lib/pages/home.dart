@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    playMusic(0);
+    playMusic(50);
 
     return Scaffold(
       body: FutureBuilder(

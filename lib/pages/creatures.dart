@@ -20,7 +20,7 @@ class _CreaturesPageState extends State<CreaturesPage> {
       tempAsset: 'https://static.wikia.nocookie.net/p__/images/9/9b/CatDog_render.png/revision/latest?cb=20210110223051&path-prefix=protagonist',
     ),
     InfoCreature(
-      creatureName: 'buddah cheese',
+      creatureName: 'big cheese',
       tempAsset: 'https://cdn.pixabay.com/photo/2013/07/12/17/39/rat-152162_1280.png',
     ),
   ];
@@ -70,55 +70,54 @@ class _CreaturesPageState extends State<CreaturesPage> {
               color: const Color.fromRGBO(243, 243,243, 1.0),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 6.0,
+                  mainAxisSpacing: 6.0,
                 ),
                 itemCount: ownedCreatures.length,
                 primary: false,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
+                  return Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(232, 229, 220, 1.0),
                         borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(232, 229, 220, 1.0),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            equipCreature(context, index);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              children: [
-                                Image.network(
-                                  ownedCreatures[index].tempAsset,
-                                  width: 250,
-                                  height: 100,
+                      child: InkWell(
+                        onTap: () {
+                          equipCreature(context, index);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(6), // Reduce padding here
+                          child: Column(
+                            children: [
+                              Image.network(
+                                ownedCreatures[index].tempAsset,
+                                width: 80,
+                                height: 50,
+                              ),
+                              Text(
+                                ownedCreatures[index].creatureName,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
                                 ),
-                                Text(
-                                  ownedCreatures[index].creatureName,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -126,6 +125,7 @@ class _CreaturesPageState extends State<CreaturesPage> {
                   );
                 },
               ),
+
             ),
           ],
         ),
@@ -140,17 +140,18 @@ class _CreaturesPageState extends State<CreaturesPage> {
         return AlertDialog(
           title: Text("Equip ${ownedCreatures[num].creatureName}?"),
           actions: <Widget>[
-            TextButton(
-              child: const Text("No"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+
             TextButton(
               child: const Text("Yes"),
               onPressed: () {
                 Navigator.of(context).pop();
                 confirmEquipCreature(context, num);
+              },
+            ),
+            TextButton(
+              child: const Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
             ),
           ],
