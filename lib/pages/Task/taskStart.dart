@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:main/pages/mainTaskPage.dart';
+import 'package:main/pages/Task/mainTaskPage.dart';
 
 import 'Task.dart';
 import 'TaskModel.dart';
 
 
-
+//This is the page where the task gets started.
 class TaskStart extends StatefulWidget {
   Task taskList;
 
@@ -63,7 +63,6 @@ class _TaskStartState extends State<TaskStart> {
         body: Center(
             child: Column(
               children: [
-
                 //Here we list the title/name of the task opened
                 Padding(padding: EdgeInsets.only(top: 10),
                   child: Text("Task Name: " + widget.taskList.name!,
@@ -111,12 +110,12 @@ class _TaskStartState extends State<TaskStart> {
 
 //This is the widget that will build the timer being shown
   Widget buildTime(){
-    final mins = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final secs = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    final min = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final sec = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
 
     //This is the text box widget that draws to the user on the page the timer count down as it gets updated.
     return Text(
-      '$mins:$secs',
+      '$min:$sec',
       style: TextStyle(fontSize: 50),
     );
   }

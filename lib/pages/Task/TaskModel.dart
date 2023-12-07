@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import '../storage/db_utils.dart';
+import '../../storage/db_utils.dart';
 import 'Task.dart';
 
 class TasksModel{

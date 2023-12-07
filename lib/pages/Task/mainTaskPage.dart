@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:main/pages/taskStart.dart';
+import 'package:main/pages/Task/taskStart.dart';
 
 import 'Task.dart';
 import 'TaskForm.dart';
@@ -177,6 +177,7 @@ class _mainTaskPageState extends State<mainTaskPage> {
   }
 
 
+  //This function checks if
   void checkIfAllTasksDone(){
     int howManyDone = 0;
     for(int i = 0; i < listTask.length; i ++ ){
@@ -194,8 +195,8 @@ class _mainTaskPageState extends State<mainTaskPage> {
             actions: [
               TextButton(
                   onPressed: (){
+                    print("Run the code here");
                     Navigator.pop(context);
-                    checkIfAllTasksDone();
                   },
                   child: Text("Claim!"))
             ],
@@ -204,7 +205,5 @@ class _mainTaskPageState extends State<mainTaskPage> {
     }
 
   }
-
-
 
 }
