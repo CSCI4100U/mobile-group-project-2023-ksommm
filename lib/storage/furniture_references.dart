@@ -1,5 +1,6 @@
 import'package:main/pages/Furniture.dart';
 
+// list of furniture items to add to sql, all defaulted as unselected
 List defaultFurnitureList = [
   Furniture(id: 1, name: 'blue sofa', location: 'right', selected: 0),
   Furniture(id: 2, name: 'blue tall cupboard', location: 'right', selected: 0),

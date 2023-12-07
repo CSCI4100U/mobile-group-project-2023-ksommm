@@ -48,11 +48,13 @@ class FurnituresModel {
     );
   }
 
+  // check if db is empty
   Future<bool> dbIsEmpty() async {
     List result = await getAllFurnitures();
     return (result.isEmpty);
   }
 
+  // adds entire default furniture list to db as initialization
   Future addDefaultFurniture() async {
     for (int i = 0; i < defaultFurnitureList.length; i++) {
       await insertFurniture(defaultFurnitureList[i]);

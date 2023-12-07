@@ -88,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
       if (await furnitureModel.dbIsEmpty()) {
         await furnitureModel.addDefaultFurniture();
       }
-      print(furnitureModel.getAllFurnitures());
 
       Navigator.of(context).push(
         MaterialPageRoute(
