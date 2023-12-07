@@ -74,7 +74,6 @@ class _mainTaskPageState extends State<mainTaskPage> {
         ),
         body:
         Center(
-
           //Listview here will simply list all of the different tasks collected earlier during the init state, or if the
           //page has been rebuilt with a new updated list.
             child:
