@@ -34,7 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 2), () {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => LoginScreen(),
@@ -51,7 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/catLol.png'),
-            SizedBox(height: 17),
             const SizedBox(height: 17),
             const Text(
               'Our app lol IDK how we surviving',
@@ -119,9 +117,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _entryField(
-    String title,
-    TextEditingController controller,
-  ) {
       String title,
       TextEditingController controller,
       ) {
@@ -138,9 +133,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed:
-          isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
-      child: Text(isLogin ? 'Login' : 'Register'),
       onPressed: isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -172,27 +164,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Welcome to our App!",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                SizedBox(
-                    height: 160,
-                    width: 160,
-                    child: Image.asset('assets/catLol.png')),
-                _entryField('email', _controllerEmail),
-                _entryField('password', _controllerPassword),
-                _errorMessage(),
-                _submitButton(),
-                _loginOrRegisterButton(),
-              ]),
       body: Container(
 
         width: double.infinity,
@@ -292,11 +263,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
-    ));
     );
   }
 }
-
 
 
 

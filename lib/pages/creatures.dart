@@ -6,7 +6,6 @@ class CreaturesPage extends StatefulWidget {
 }
 
 class _CreaturesPageState extends State<CreaturesPage> {
-   List<InfoCreature> ownedCreatures = [
   List<InfoCreature> ownedCreatures = [
     InfoCreature(
       creatureName: 'koala',
@@ -31,18 +30,6 @@ class _CreaturesPageState extends State<CreaturesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Your Creatures"),
-      ),
-      body: ListView.builder(
-        itemCount: ownedCreatures.length,
-        itemBuilder: (context, num) {
-          return ListTile(
-            onTap: () => equipCreature(context, num),
-            leading: Image.network(
-              ownedCreatures[num].tempAsset,
-              width: 50,
-              height: 50,
       backgroundColor: const Color.fromRGBO(255, 255, 255, 0.92),
       body: SingleChildScrollView(
         child: Column(
@@ -140,12 +127,6 @@ class _CreaturesPageState extends State<CreaturesPage> {
                 },
               ),
             ),
-            title: Text(ownedCreatures[num].creatureName),
-            subtitle: ownedCreatures[num].status
-                ? const Text('equipped', style: TextStyle(color: Colors.green))
-                : null,
-          );
-        },
           ],
         ),
       ),
@@ -199,4 +180,4 @@ class InfoCreature {
     required this.tempAsset,
     this.status = false,
   });
-}}
+}

@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< Updated upstream
     playMusic(0);
     playMusic(50);
     return Scaffold(
@@ -99,92 +100,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              final selectedCreature =
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => CreaturesPage(),
-                                ),
-                              );
-                              if (selectedCreature != null) {
-                                setState(() {
-                                  equippedCreature = selectedCreature;
-                                });
-                              }
-                            },
-                            child:
-                            Text('Pets', style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => FurnitureStore(),
-                                ),
-                              );
-                            },
-                            child: Text('Furniture',
-                                style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => mainTaskPage(),
-                                ),
-                              );
-                            },
-                            child:
-                            Text('Tasks', style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => AchievementsPage(),
-                                ),
-                              );
-                            },
-                            child: Text('Trophys',
-                                style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      SettingsPage(playMusic: (volSlider) {
-                                        playMusic:
-                                        (volSlider);
-                                      }),
-                                ),
-                              );
-                            },
-                            child: Text('Settings',
-                                style: TextStyle(fontSize: 12.0)),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ],
@@ -204,6 +119,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
     else {
+=======
     } else {
       throw Exception("No location available");
     }

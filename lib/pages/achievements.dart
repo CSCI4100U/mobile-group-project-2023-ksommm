@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-class AchievementsPage extends StatelessWidget {
 class AchievementsPage extends StatefulWidget {
   @override
   _AchievementsPageState createState() => _AchievementsPageState();
@@ -12,11 +11,6 @@ class _AchievementsPageState extends State<AchievementsPage> {
   int totalPets = 6;
 
   final List<Map<String, String>> challenges = [
-    {'Award Name': '5 Day Streak', 'Desc': 'example '},
-    {'Award Name': '10 Day Streak', 'Desc': 'exmaple'},
-    {'Award Name': '11 Day Streak', 'Desc': 'example'},
-    {'Award Name': '12 Day Streak', 'Desc': 'example'},
-    {'Award Name': '13 Day Streak', 'Desc': 'example'},
     {'Award Name': 'Streak I', 'Desc': 'Complete 3 Tasks In a Row'},
     {'Award Name': 'Streak II', 'Desc': 'Complete 10 Tasks In a Row'},
     {'Award Name': 'Streak III', 'Desc': 'Complete 15 Tasks In a Row'},
@@ -24,10 +18,6 @@ class _AchievementsPageState extends State<AchievementsPage> {
     {'Award Name': 'The Zoo', 'Desc': 'Own 5 Pets'},
   ];
 
-  String trophyUnlocked(int index) {
-    return index % 2 == 0
-        ? 'assets/lockedTrophy.png'
-        : 'assets/unlockedTrophy.png';
   String trophyUnlocked(int index, String awardName) {
     if (awardName.toLowerCase().contains('streak i') && maxStreak >= 3) {
       return 'assets/unlockedTrophy.png';
@@ -55,21 +45,6 @@ class _AchievementsPageState extends State<AchievementsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Achievements'),
-      ),
-      body: ListView.builder(
-        itemCount: challenges.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage(trophyUnlocked(index)),
-            ),
-            title: Text(
-              challenges[index]['Award Name']!,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Column(
       backgroundColor: const Color.fromRGBO(255, 255, 255, 0.92),
       body: ListView(
         children: [
@@ -78,11 +53,22 @@ class _AchievementsPageState extends State<AchievementsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(challenges[index]['Desc']!),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, size: 35),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                const Text(
+                  'Your',
+                  style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+                const Text(
+                  'Achievements',
+                  style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold, color: Colors.black),
+                ),
               ],
             ),
-          );
-        },
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
