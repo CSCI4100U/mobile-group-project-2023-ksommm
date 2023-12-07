@@ -8,16 +8,18 @@ import 'TaskModel.dart';
 
 class mainTaskPage extends StatefulWidget {
   final String? title;
+
   const mainTaskPage({super.key, this.title});
 
   @override
   State<mainTaskPage> createState() => _mainTaskPageState();
 }
 
-
 class _mainTaskPageState extends State<mainTaskPage> {
-  List listTask =[];
-  var _taskModel = TasksModel();
+  List listTask = [];
+  int id_counter = 0;
+  int counter = 0;
+  var _task = TasksModel();
   var _lastInsertedId;
   int id_counter = 0;
   int _selectedIndex = 0;
@@ -25,12 +27,10 @@ class _mainTaskPageState extends State<mainTaskPage> {
 
   @override
   void initState() {
-
     _getThingsOnStartup().then((value) async {
       print('Load done');
     });
     super.initState();
-
   }
 
   //On start up,
@@ -42,7 +42,6 @@ class _mainTaskPageState extends State<mainTaskPage> {
     setState(() {
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +140,6 @@ class _mainTaskPageState extends State<mainTaskPage> {
 
   }
 
-
   //This onGoBack function is used to update the list and to set the lastInsertedID correctly for when the page is reset
   //This function had to be specifically created for delete, so that it can be called and update the list now without the
   //task that was just deleted.
@@ -149,8 +147,8 @@ class _mainTaskPageState extends State<mainTaskPage> {
     listTask = await _taskModel.getAllTasks();
     if(listTask.length > 0){
       _lastInsertedId = listTask[listTask.length - 1].id!;
-    }else{
-     _lastInsertedId = 0;
+    } else {
+      _lastInsertedId = 0;
     }
     setState(() {});
     return 0;
