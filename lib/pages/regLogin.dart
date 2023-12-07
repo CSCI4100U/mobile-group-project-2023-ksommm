@@ -1,6 +1,8 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:main/storage/auth.dart';
 import 'package:main/pages/home.dart';
 import 'package:main/storage/firestore_service.dart';
@@ -33,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => LoginScreen(),
       ));
@@ -49,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/catLol.png'),
-            SizedBox(height: 17),
+            const SizedBox(height: 17),
             const Text(
               'Our app lol IDK how we surviving',
               style: TextStyle(
@@ -116,9 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _entryField(
-    String title,
-    TextEditingController controller,
-  ) {
+      String title,
+      TextEditingController controller,
+      ) {
     return TextField(
         controller: controller,
         decoration: InputDecoration(
@@ -132,11 +134,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed:
-          isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
-      child: Text(isLogin ? 'Login' : 'Register'),
+      onPressed: isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+      ),
+      child: Text(
+        isLogin ? 'Login' : 'Register',
+        style: const TextStyle(fontSize: 15),
+      ),
     );
   }
+
+
 
   Widget _loginOrRegisterButton() {
     return TextButton(
@@ -149,38 +161,117 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Welcome to our App!",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                SizedBox(
-                    height: 160,
-                    width: 160,
-                    child: Image.asset('assets/catLol.png')),
-                _entryField('email', _controllerEmail),
-                _entryField('password', _controllerPassword),
-                _errorMessage(),
-                _submitButton(),
-                _loginOrRegisterButton(),
-              ]),
+      body: Container(
+
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [
+              Colors.blue.shade900,
+              Colors.blue.shade800,
+              Colors.blue.shade400,
+            ],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: <Widget>[
+            const SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      FadeInUp(
+                        duration: const Duration(milliseconds: 1150),
+                        child:
+                        const Text(
+                          "Welcome",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      FadeInUp(
+                        duration: const Duration(milliseconds: 1500),
+                        child:
+                        const Text(
+                          "User!",
+                          style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: FadeInUp(
+                      duration: const Duration(milliseconds: 1500),
+                      child: Image.asset('assets/catLol.png'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 110),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(35),
+                    topRight: Radius.circular(35),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Please input your details here",
+                          style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 30),
+                        _entryField('Email or Phone number', _controllerEmail),
+                        const SizedBox(height: 20),
+                        _entryField('Password', _controllerPassword),
+                        const SizedBox(height: 30),
+                        _errorMessage(),
+                        _submitButton(),
+                        const SizedBox(height: 150),
+                        _loginOrRegisterButton(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-    ));
+    );
   }
 }
 
 
 
+<<<<<<< HEAD
+=======
 class TestWidget extends StatelessWidget {
   final FirestoreService firestoreService = FirestoreService();
 
@@ -200,3 +291,4 @@ class TestWidget extends StatelessWidget {
 }
 
 
+>>>>>>> main
