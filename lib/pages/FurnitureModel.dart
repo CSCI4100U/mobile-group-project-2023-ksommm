@@ -61,4 +61,10 @@ class FurnituresModel {
     }
     return;
   }
+
+  Future deleteDatabase() async {
+    final db = await DBUtilsFurniture.init();
+    await db.delete('furniture_items');
+    return;
+  }
 }
