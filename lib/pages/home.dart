@@ -100,7 +100,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                    // ... (existing code for buttons is removed)
                   ],
                 ),
               ],
