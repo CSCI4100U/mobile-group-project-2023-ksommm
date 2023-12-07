@@ -2,7 +2,7 @@
 
 # Final Submission Instructions
 Hi, welcome to our app!
-Please ensure that your pulling from the main branch as well as making the configuration of the project is set to regLogin.dart.That is the main file to run when using the app as shown below.
+Please ensure that you are pulling from the main branch as well as making the configuration of the project is set to regLogin.dart.That is the main file to run when using the app as shown below.
 
 ![image](https://github.com/CSCI4100U/mobile-group-project-2023-ksommm/assets/71108341/2596eefc-01ee-426e-b971-fc51163818a6)
 
