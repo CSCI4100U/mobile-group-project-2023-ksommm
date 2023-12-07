@@ -1,35 +1,32 @@
-class Task{
+class Furniture{
   int? id;
   String? name;
-  int? price;
   String? location;
-  int? purchased;
+  int? selected;
 
-
-  Task({this.id, this.name, this.price, this.location, this.purchased});
+  Furniture({this.id, this.name, this.location, this.selected});
 
   //This maps all the variables
-  Task.fromMap(Map map){
+  Furniture.fromMap(Map map){
     id = map['id'];
     name = map['name'];
-    price = map['price'];
     location = map['location'];
-    purchased = map['purchased'];
+    selected = map['selected'];
+
   }
 
   Map<String,Object> toMap(){
     return{
       "id": id!,
       'name': name!,
-      'price': price!,
       'location': location!,
-      'purchased': purchased!,
+      'selected': selected!,
     };
   }
 
   @override
   String toString(){
-    return 'Grade[id: $id, name: $name, price: $price, location: $location, purchased: $purchased]';
+    return 'Grade[id: $id, name: $name, location: $location, selected: $selected]';
   }
 
 

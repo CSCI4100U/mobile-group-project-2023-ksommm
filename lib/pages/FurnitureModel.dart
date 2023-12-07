@@ -1,41 +1,41 @@
 import 'package:sqflite/sqflite.dart';
-import '../storage/db_utils.dart';
-import 'Task.dart';
+import '../storage/db_utils_furniture.dart';
+import 'Furniture.dart';
 
-class TasksModel{
-  Future<int> insertTask(Task task) async{
+class FurnituresModel{
+  Future<int> insertFurniture(Furniture furniture) async{
     //This needs to be present in any queries, updates, etc.
     //you do with your database
-    final db = await DBUtils.init();
+    final db = await DBUtilsFurniture.init();
     return db.insert(
-      'task_items',
-      task.toMap(),
+      'furniture_items',
+      furniture.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
 
-  Future getAllTasks() async{
+  Future getAllFurnitures() async{
     //This needs to be present in any queries, updates, etc.
     //you do with your database
-    final db = await DBUtils.init();
-    final List maps = await db.query('task_items');
+    final db = await DBUtilsFurniture.init();
+    final List maps = await db.query('furniture_items');
     List result = [];
     for (int i = 0; i < maps.length; i++){
       result.add(
-          Task.fromMap(maps[i])
+          Furniture.fromMap(maps[i])
       );
     }
     return result;
   }
 
-  Future<int> updateTask(Task task) async{
-    final db = await DBUtils.init();
+  Future<int> updateFurniture(Furniture furniture) async{
+    final db = await DBUtilsFurniture.init();
     return db.update(
-      'task_items',
-      task.toMap(),
+      'furniture_items',
+      furniture.toMap(),
       where: 'id = ?',
-      whereArgs: [task.id],
+      whereArgs: [furniture.id],
     );
   }
 
@@ -43,9 +43,9 @@ class TasksModel{
   Future<int> deleteTodoWithId(int id) async{
     //This needs to be present in any queries, updates, etc.
     //you do with your database
-    final db = await DBUtils.init();
+    final db = await DBUtilsFurniture.init();
     return db.delete(
-      'task_items',
+      'furniture_items',
       where: 'id = ?',
       whereArgs: [id],
     );

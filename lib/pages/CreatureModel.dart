@@ -1,51 +1,53 @@
+import 'package:main/storage/db_utils_creature.dart';
 import 'package:sqflite/sqflite.dart';
 import '../storage/db_utils.dart';
+import 'Creature.dart';
 import 'Task.dart';
 
-class TasksModel{
-  Future<int> insertTask(Task task) async{
+class CreatureModel{
+  Future<int> insertCreature(Creature creature) async{
     //This needs to be present in any queries, updates, etc.
     //you do with your database
-    final db = await DBUtils.init();
+    final db = await DBUtilsCreature.init();
     return db.insert(
-      'task_items',
-      task.toMap(),
+      'creature_items',
+      creature.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
 
-  Future getAllTasks() async{
+  Future getAllCreatures() async{
     //This needs to be present in any queries, updates, etc.
     //you do with your database
-    final db = await DBUtils.init();
-    final List maps = await db.query('task_items');
+    final db = await DBUtilsCreature.init();
+    final List maps = await db.query('creature_items');
     List result = [];
     for (int i = 0; i < maps.length; i++){
       result.add(
-          Task.fromMap(maps[i])
+          Creature.fromMap(maps[i])
       );
     }
     return result;
   }
 
-  Future<int> updateTask(Task task) async{
-    final db = await DBUtils.init();
+  Future<int> updateCreature(Creature creature) async{
+    final db = await DBUtilsCreature.init();
     return db.update(
-      'task_items',
-      task.toMap(),
+      'creature_items',
+      creature.toMap(),
       where: 'id = ?',
-      whereArgs: [task.id],
+      whereArgs: [creature.id],
     );
   }
 
 
-  Future<int> deleteTodoWithId(int id) async{
+  Future<int> deleteTodoWithIdCreature(int id) async{
     //This needs to be present in any queries, updates, etc.
     //you do with your database
-    final db = await DBUtils.init();
+    final db = await DBUtilsCreature.init();
     return db.delete(
-      'task_items',
+      'creature_items',
       where: 'id = ?',
       whereArgs: [id],
     );

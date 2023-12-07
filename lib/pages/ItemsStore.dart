@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:main/pages/FurnitureModel.dart';
+
+import 'Furniture.dart';
 
 class FurnitureStore extends StatelessWidget {
   final List<Item> items = [
@@ -16,8 +19,17 @@ class FurnitureStore extends StatelessWidget {
     ),
   ];
 
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -33,7 +45,6 @@ class FurnitureStore extends StatelessWidget {
                       Navigator.pop(context);
                     },
                   ),
-
                 ],
               ),
               SizedBox(height: 25),
