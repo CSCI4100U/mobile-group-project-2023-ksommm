@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// This class gets furniture items from sqlite database and displays
+// the appropriate images for what is selected
 class FurnitureItems extends StatefulWidget {
   const FurnitureItems({super.key});
 
@@ -45,16 +47,12 @@ class _FurnitureItemsState extends State<FurnitureItems> {
   Widget build(BuildContext context) {
     FurnituresModel furnitureModel = FurnituresModel();
 
+    // positions of left and right furniture pieces
     final Map<String, Offset> positionMap = {
       'left': const Offset(0, 400),
       'right': const Offset(300, 400),
-      // Add more positions and their corresponding coordinates
     };
 
-    // // Returns list of furniture items that are selected
-    // List getSelected() {
-    //   return furnitureList.where((furniture) => furniture.selected == 1).toList();
-    // }
     // This stack places all selected furniture's images on screen
     return FutureBuilder(
       future: furnitureModel.getAllFurnitures(),
@@ -68,7 +66,7 @@ class _FurnitureItemsState extends State<FurnitureItems> {
         } else {
           List furnitureList = snapshot.data!;
 
-          // // Get list of only furniture with selected == 1 for displaying
+          // Get list of only furniture with selected == 1 for displaying
           List selectedFurniture = furnitureList
               .where((furniture) => furniture.selected == 1)
               .toList();

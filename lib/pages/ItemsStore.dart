@@ -139,7 +139,7 @@ class FurnitureStore extends StatelessWidget {
             TextButton(
               child: Text('Equip'),
               onPressed: () {
-                // TODO: check in database if anything with same position is selected. If so, set old to selected = 0. Set new furniture to selected = 1.
+                // check in database if anything with same position is selected. If so, set old to selected = 0. Set new furniture to selected = 1.
                 furnitureList.forEach((furnitureItem) {
                   if (furnitureItem.selected == 1 &&
                       furnitureItem.location == furniture.location) {

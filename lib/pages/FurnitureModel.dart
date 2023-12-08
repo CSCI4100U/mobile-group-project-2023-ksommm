@@ -62,6 +62,7 @@ class FurnituresModel {
     return;
   }
 
+  // deletes entire furniture_items database
   Future deleteDatabase() async {
     final db = await DBUtilsFurniture.init();
     await db.delete('furniture_items');

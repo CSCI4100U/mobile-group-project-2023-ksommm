@@ -70,7 +70,8 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-//Utilizes firestore auth service to determine if user can access the app (also intiailizes furtniture database)
+// Utilizes firebase auth service to determine if user can access the app
+// (also initializes furniture database)
 class _LoginScreenState extends State<LoginScreen> {
   String? errorMessage = '';
   bool isLogin = true;
@@ -83,7 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
       await Auth().signInWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
 
-      // if furniture database is empty, we add all furniture as unselected
+      // if furniture database is empty, we add all furniture as unselected.
+      // this initializes the database for the device so it can browse
+      // the itemstore
       FurnituresModel furnitureModel = FurnituresModel();
       if (await furnitureModel.dbIsEmpty()) {
         await furnitureModel.addDefaultFurniture();
@@ -101,7 +104,8 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
-  //adds user info to firestore if valid and then launches them to the home page
+
+  // adds user info to firebase if valid and then launches them to the home page
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
