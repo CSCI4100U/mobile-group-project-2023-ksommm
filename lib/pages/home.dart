@@ -33,24 +33,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class FurnitureItems extends StatelessWidget {
-  FurnituresModel furnitureModel = FurnituresModel();
-
-  FurnitureItems({super.key});
-
-  final Map<String, Offset> positionMap = {
-    'left': const Offset(0, 400),
-    'right': const Offset(300, 400),
-    // Add more positions and their corresponding coordinates
-  };
-
-  // // Returns list of furniture items that are selected
-  // List getSelected() {
-  //   return furnitureList.where((furniture) => furniture.selected == 1).toList();
-  // }
+class FurnitureItems extends StatefulWidget {
+  const FurnitureItems({super.key});
 
   @override
+  State<FurnitureItems> createState() => _FurnitureItemsState();
+}
+
+class _FurnitureItemsState extends State<FurnitureItems> {
+  @override
   Widget build(BuildContext context) {
+    FurnituresModel furnitureModel = FurnituresModel();
+
+    final Map<String, Offset> positionMap = {
+      'left': const Offset(0, 400),
+      'right': const Offset(300, 400),
+      // Add more positions and their corresponding coordinates
+    };
+
+    // // Returns list of furniture items that are selected
+    // List getSelected() {
+    //   return furnitureList.where((furniture) => furniture.selected == 1).toList();
+    // }
     // This stack places all selected furniture's images on screen
     return FutureBuilder(
       future: furnitureModel.getAllFurnitures(),
@@ -211,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                     if (equippedCreature != null)
                       Center(
                         child: Transform.translate(
-                          offset: Offset(0.0, 5.0),
+                          offset: Offset(0.0, -50.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -227,7 +231,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 Center(child: FurnitureItems()),
-                // TODO: PLACE FURNITURE FUTUREBUILDER IN HERE
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -428,6 +431,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => FurnitureStore(),
       ),
     );
+    setState(() {});
   }
 
   void _navigateToTasksPage() {

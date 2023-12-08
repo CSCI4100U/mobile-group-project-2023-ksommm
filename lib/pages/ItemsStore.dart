@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:main/pages/Furniture.dart';
 import 'home.dart';
+import 'package:main/pages/FurnitureModel.dart';
 
 class FurnitureStore extends StatelessWidget {
-  final List<Item> items = [
-    Item(
-      tempAsset:
-      'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg',
-      name: 'Rock',
-      price: 25,
-    ),
-    Item(
-      tempAsset:
-      'https://cdn.shoplightspeed.com/shops/623692/files/15032482/300x250x2/igneous-theory-pet-rock-craft-kit.jpg',
-      name: 'Rock',
-      price: 25,
-    ),
-  ];
+  FurnituresModel furnitureModel = FurnituresModel();
+  final List furnitureList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -43,68 +32,88 @@ class FurnitureStore extends StatelessWidget {
                 style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 45),
+              // Futurebuilder for getting furniture attributes from sqlite
+              FutureBuilder(
+                  future: furnitureModel.getAllFurnitures(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error fetching data'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No images found'));
+                    } else {
+                      List furnitureList = snapshot.data!;
 
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 8.0,
-                      mainAxisSpacing: 8.0,
-                    ),
-                    itemCount: items.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          _showEquipDialog(context, items[index]);
-                        },
-                        child: Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Expanded(
-                                child: Image.network(
-                                  items[index].tempAsset,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      items[index].name,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 8.0,
+                              mainAxisSpacing: 8.0,
+                            ),
+                            itemCount: furnitureList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  _showEquipDialog(context,
+                                      furnitureList[index], furnitureList);
+                                },
+                                child: Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(
+                                        child: Image.asset(
+                                          'assets/images/${furnitureList[index].name}.png',
+                                          width: 100,
+                                          height: 100,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      '\$${items[index].price}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
+                                      Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              furnitureList[index].name,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              '${furnitureList[index].location}',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
                         ),
                       );
-                    },
-                  ),
-                ),
-              ),
+                    }
+                  }),
             ],
           ),
         ),
@@ -112,14 +121,14 @@ class FurnitureStore extends StatelessWidget {
     );
   }
 
-  
-  void _showEquipDialog(BuildContext context, Item item) {
+  void _showEquipDialog(
+      BuildContext context, Furniture furniture, List furnitureList) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Equip Item'),
-          content: Text('Do you want to equip ${item.name}?'),
+          content: Text('Do you want to equip ${furniture.name}?'),
           actions: [
             TextButton(
               child: Text('Cancel'),
@@ -130,11 +139,18 @@ class FurnitureStore extends StatelessWidget {
             TextButton(
               child: Text('Equip'),
               onPressed: () {
-                Navigator.of(context).pop(
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ),
-                );
+                // TODO: check in database if anything with same position is selected. If so, set old to selected = 0. Set new furniture to selected = 1.
+                furnitureList.forEach((furnitureItem) {
+                  if (furnitureItem.selected == 1 &&
+                      furnitureItem.location == furniture.location) {
+                    // Update 'selected' property from 1 to 0 for selected furniture item
+                    furnitureItem.selected = 0;
+                    furnitureModel.updateFurniture(furnitureItem);
+                  }
+                });
+                furniture.selected = 1;
+                furnitureModel.updateFurniture(furniture);
+                Navigator.pop(context);
               },
             ),
           ],
@@ -142,12 +158,4 @@ class FurnitureStore extends StatelessWidget {
       },
     );
   }
-}
-
-class Item {
-  String tempAsset;
-  String name;
-  int price;
-
-  Item({required this.tempAsset, required this.name, required this.price});
 }
