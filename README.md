@@ -1,4 +1,16 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/Ejc5gqh5)
+
+# Final Submission Instructions
+Hi, welcome to our app!
+Please ensure that you are pulling from the main branch as well as making the configuration of the project is set to regLogin.dart.That is the main file to run when using the app as shown below.
+
+![image](https://github.com/CSCI4100U/mobile-group-project-2023-ksommm/assets/71108341/2596eefc-01ee-426e-b971-fc51163818a6)
+
+To create an account and login with it while using our app please input a valid email and password, be sure to remember it if you are going back!
+
+
+
+
 # CSCI4100 Group Project
 
 Group members (3-5) (no Student IDs, only names and github usernames):
